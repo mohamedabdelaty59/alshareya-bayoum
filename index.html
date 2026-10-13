@@ -1679,7 +1679,7 @@ function suggestEducationForChild(idx,age){
 function calcChildAge(idx){
   const row=document.querySelector(`.child-row[data-idx="${idx}"]`);if(!row)return;
   const bd=row.querySelector('.child-birthDate').value,d=document.getElementById(`childAge${idx}`);if(!bd||!d)return;
-  const b=b new Date(bd),t=new Date();let a=t.getFullYear()-b.getFullYear();
+  const b=new Date(bd),t=new Date();,t=new Date();let a=t.getFullYear()-b.getFullYear();
   if(t.getMonth()<b.getMonth()||(t.getMonth()===b.getMonth()&&t.getDate()<b.getDate()))a--;
   d.textContent=a+' سنة';suggestEducationForChild(idx,a);
 }
