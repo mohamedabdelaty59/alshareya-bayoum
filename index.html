@@ -60,6 +60,9 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .nav-item.rev-active{background:linear-gradient(135deg,var(--teal-600),var(--teal-500))!important}
 .nav-item.exp-active{background:linear-gradient(135deg,var(--danger-600),var(--danger-500))!important}
 .nav-item.mem-active{background:linear-gradient(135deg,var(--purple-600),#9C27B0)!important}
+.nav-item.fund-active{background:linear-gradient(135deg,#0D47A1,#1976D2)!important}
+.nav-item.loan-active{background:linear-gradient(135deg,#B71C1C,#E53935)!important}
+.nav-item.recon-active{background:linear-gradient(135deg,#00695C,#00897B)!important}
 .sidebar.collapsed .nav-item{justify-content:center;padding:10px}
 .sidebar.collapsed .nav-item span,.sidebar.collapsed .nav-item .badge-count{display:none}
 .sidebar.collapsed .nav-item.active::before{display:none}
@@ -187,12 +190,37 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .kpi-label{font-size:12px;color:var(--ink-500);font-weight:600;margin-top:4px}
 .kpi-sub{font-size:10.5px;color:var(--ink-500);margin-top:8px;padding-top:8px;border-top:1px dashed var(--ink-300)}
 
-.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:18px}
-.chart-grid.three{grid-template-columns:1fr 1fr 1fr}
-.chart-card{background:#fff;border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);border:1px solid var(--ink-100)}
-.chart-card h4{font-size:13px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.chart-card h4 i{color:var(--brand-600)}
-.chart-wrap{position:relative;height:240px}
+/* 🆕 FUND CARDS */
+.fund-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:18px}
+.fund-card{background:#fff;border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-sm);border:1px solid var(--ink-100);position:relative;overflow:hidden;transition:var(--transition);cursor:pointer}
+.fund-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.fund-card::before{content:'';position:absolute;top:0;right:0;left:0;height:4px}
+.fund-card[data-fund="KAFALA"]::before{background:linear-gradient(90deg,#C62828,#EF5350)}
+.fund-card[data-fund="ZAKAT"]::before{background:linear-gradient(90deg,#2E7D32,#66BB6A)}
+.fund-card[data-fund="QURAN"]::before{background:linear-gradient(90deg,#1565C0,#42A5F5)}
+.fund-card[data-fund="KINDER"]::before{background:linear-gradient(90deg,#6A1B9A,#AB47BC)}
+.fund-card[data-fund="MEMBERS"]::before{background:linear-gradient(90deg,#00897B,#26A69A)}
+.fund-card[data-fund="GENERAL"]::before{background:linear-gradient(90deg,#E65100,#FB8C00)}
+.fund-card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.fund-card-icon{width:42px;height:42px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--ink-100)}
+.fund-card-title{font-size:13.5px;font-weight:800;color:var(--ink-900)}
+.fund-card-bank{font-size:10px;color:var(--ink-500);margin-top:2px}
+.fund-card-balance{font-size:24px;font-weight:900;line-height:1;margin-bottom:10px}
+.fund-card-balance.pos{color:var(--brand-700)}
+.fund-card-balance.neg{color:var(--danger-600)}
+.fund-card-balance small{font-size:12px;opacity:.7;font-weight:700}
+.fund-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;color:var(--ink-500);padding-top:10px;border-top:1px dashed var(--ink-300)}
+.fund-card-stat strong{display:block;color:var(--ink-900);font-weight:800;font-size:12.5px;margin-top:2px}
+
+/* GRAND TOTAL */
+.grand-total{background:linear-gradient(135deg,#0D47A1,#1976D2);border-radius:var(--r-xl);padding:24px;color:#fff;margin-bottom:18px;position:relative;overflow:hidden}
+.grand-total h3{font-size:14px;font-weight:800;opacity:.9;margin-bottom:8px}
+.grand-total-value{font-size:40px;font-weight:900;line-height:1}
+.grand-total-value small{font-size:16px;opacity:.8;font-weight:700;margin-right:6px}
+.grand-total-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.grand-total-stat{background:rgba(255,255,255,.12);border-radius:var(--r-md);padding:12px;text-align:center}
+.grand-total-stat-value{font-size:16px;font-weight:900}
+.grand-total-stat-label{font-size:10px;opacity:.85;margin-top:4px}
 
 /* TABLES */
 .table-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--ink-100);background:#fff}
@@ -242,12 +270,14 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .timeline-dot.rev{background:linear-gradient(135deg,var(--teal-600),var(--teal-500))}
 .timeline-dot.exp{background:linear-gradient(135deg,var(--danger-600),var(--danger-500))}
 .timeline-dot.mem{background:linear-gradient(135deg,var(--purple-600),#9C27B0)}
+.timeline-dot.in{background:linear-gradient(135deg,#2E7D32,#66BB6A)}
+.timeline-dot.out{background:linear-gradient(135deg,#C62828,#EF5350)}
 .timeline-body{flex:1}
 .timeline-body strong{font-size:13px;font-weight:800;display:block;margin-bottom:2px}
 .timeline-body p{font-size:11px;color:var(--ink-500)}
 .timeline-amt{font-size:14px;font-weight:900;color:var(--brand-700);white-space:nowrap}
-.timeline-amt.rev{color:var(--teal-600)}
-.timeline-amt.exp{color:var(--danger-600)}
+.timeline-amt.rev,.timeline-amt.in{color:var(--teal-600)}
+.timeline-amt.exp,.timeline-amt.out{color:var(--danger-600)}
 .timeline-amt.mem{color:var(--purple-600)}
 
 /* MODAL */
@@ -255,6 +285,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .modal-overlay.open{display:flex}
 .modal-box{background:#fff;border-radius:var(--r-xl);width:520px;max-width:100%;max-height:90vh;box-shadow:var(--shadow-xl);display:flex;flex-direction:column;animation:slideUp .3s}
 .modal-head{padding:16px 20px;background:linear-gradient(135deg,var(--accent-600),var(--accent-500));color:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:center;justify-content:space-between}
+.modal-head.warn{background:linear-gradient(135deg,#B71C1C,#E53935)}
 .modal-head h3{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
 .modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px}
 .modal-body{padding:20px;overflow-y:auto;flex:1}
@@ -280,6 +311,15 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .booklet-card-amount.exp{color:var(--danger-600)}
 .booklet-card-label{font-size:10.5px;color:var(--ink-500);margin-top:4px}
 
+/* 🆕 FUND BADGE in forms */
+.fund-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r-full);font-size:11.5px;font-weight:800;background:var(--ink-100);color:var(--ink-700);margin-top:6px}
+.fund-badge[data-fund="KAFALA"]{background:#FFEBEE;color:#C62828}
+.fund-badge[data-fund="ZAKAT"]{background:#E8F5E9;color:#2E7D32}
+.fund-badge[data-fund="QURAN"]{background:#E3F2FD;color:#1565C0}
+.fund-badge[data-fund="KINDER"]{background:#F3E5F5;color:#6A1B9A}
+.fund-badge[data-fund="MEMBERS"]{background:#E0F2F1;color:#00897B}
+.fund-badge[data-fund="GENERAL"]{background:#FFF3E0;color:#E65100}
+
 /* EXPORT CHIPS */
 .export-bar{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--ink-100);margin-top:8px;align-items:center}
 .export-chip{padding:6px 12px;border-radius:var(--r-full);border:1.5px solid var(--brand-200);background:#fff;font-family:'Cairo';font-size:11.5px;font-weight:700;color:var(--brand-800);cursor:pointer;display:flex;align-items:center;gap:5px;transition:var(--transition)}
@@ -298,9 +338,6 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .report-stat-label i{color:var(--brand-600);font-size:12px;width:16px}
 .report-stat-value{font-size:15px;font-weight:900;color:var(--brand-800)}
 .report-stat-value.warn{color:var(--warn-600)}.report-stat-value.danger{color:var(--danger-600)}.report-stat-value.blue{color:var(--accent-600)}.report-stat-value.teal{color:var(--teal-600)}.report-stat-value.purple{color:var(--purple-600)}
-.report-tips{background:linear-gradient(135deg,#F1F8E9,#E8F5E9);border-radius:var(--r-md);padding:14px;border-right:4px solid var(--brand-500)}
-.report-tip{display:flex;gap:10px;padding:8px 0;font-size:12.5px;color:var(--ink-700);line-height:1.6}
-.report-tip i{color:var(--warn-600);flex-shrink:0;margin-top:3px}
 
 /* STATUS BADGE */
 .status-pill{padding:3px 10px;border-radius:var(--r-full);font-size:10.5px;font-weight:800;display:inline-flex;align-items:center;gap:4px}
@@ -311,6 +348,8 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .status-pill.unpaid{background:var(--danger-100);color:var(--danger-600)}
 .status-pill.board{background:#F3E5F5;color:var(--purple-600)}
 .status-pill.general{background:var(--accent-100);color:var(--accent-600)}
+.status-pill.loan-active{background:#FFF3E0;color:#E65100}
+.status-pill.loan-paid{background:var(--brand-100);color:var(--brand-800)}
 
 /* RESPONSIVE */
 @media(max-width:1280px){
@@ -318,6 +357,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   .chart-grid{grid-template-columns:1fr}
   .chart-grid.three{grid-template-columns:1fr}
   .form-grid.g4{grid-template-columns:repeat(2,1fr)}
+  .fund-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 }
 @media(max-width:900px){
   .sidebar{width:var(--sidebar-collapsed)}
@@ -328,6 +368,8 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   .form-grid,.form-grid.g2,.form-grid.g4{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr}
   .balance-hero-stats{grid-template-columns:1fr}
+  .fund-grid{grid-template-columns:1fr}
+  .grand-total-stats{grid-template-columns:1fr}
 }
 @media print{
   .sidebar,.topbar,.btn,.export-bar,.assist-tabs{display:none!important}
@@ -351,6 +393,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
     <nav class="sidebar-nav">
       <div class="nav-section-label">الرئيسية</div>
       <button class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard',this)"><i class="fas fa-chart-pie"></i><span>لوحة التحكم</span></button>
+      <button class="nav-item" data-page="funds" onclick="switchPage('funds',this)"><i class="fas fa-vault"></i><span>أرصدة الصناديق</span></button>
       <button class="nav-item" data-page="registration" onclick="switchPage('registration',this)"><i class="fas fa-user-plus"></i><span>تسجيل مستفيد</span></button>
       <button class="nav-item" data-page="search" onclick="switchPage('search',this)"><i class="fas fa-search"></i><span>بحث الأسر والأبناء</span></button>
 
@@ -358,6 +401,8 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
       <button class="nav-item" data-page="assistance" onclick="switchPage('assistance',this)"><i class="fas fa-hand-holding-usd"></i><span>صرف المساعدات</span></button>
       <button class="nav-item" data-page="revenues" onclick="switchPage('revenues',this)"><i class="fas fa-coins"></i><span>الإيرادات والدفاتر</span></button>
       <button class="nav-item" data-page="expenses" onclick="switchPage('expenses',this)"><i class="fas fa-money-bill-transfer"></i><span>المصروفات</span></button>
+      <button class="nav-item" data-page="loans" onclick="switchPage('loans',this)"><i class="fas fa-right-left"></i><span>السلفات بين الصناديق</span></button>
+      <button class="nav-item" data-page="reconciliation" onclick="switchPage('reconciliation',this)"><i class="fas fa-building-columns"></i><span>مطابقة البنك</span></button>
 
       <div class="nav-section-label">الأعضاء</div>
       <button class="nav-item" data-page="members" onclick="switchPage('members',this)"><i class="fas fa-user-tie"></i><span>الأعضاء والعضويات</span></button>
@@ -398,18 +443,19 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           <button class="btn btn-orange btn-sm" onclick="showFollowUpList()"><i class="fas fa-list"></i> عرض</button>
         </div>
 
-        <div class="balance-hero" id="balanceHero">
-          <div class="balance-hero-head">
-            <h3><i class="fas fa-wallet"></i> الرصيد الحالي للصندوق</h3>
-            <div class="icon"><i class="fas fa-coins"></i></div>
+        <div class="grand-total">
+          <h3><i class="fas fa-vault"></i> إجمالي رصيد الجمعية (كل الصناديق)</h3>
+          <div class="grand-total-value" id="grandTotalValue">— <small>ج.م</small></div>
+          <div class="grand-total-stats">
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="gtRevenues">—</div><div class="grand-total-stat-label">إجمالي الإيرادات</div></div>
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="gtAssistance">—</div><div class="grand-total-stat-label">إجمالي المساعدات</div></div>
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="gtExpenses">—</div><div class="grand-total-stat-label">إجمالي المصروفات</div></div>
           </div>
-          <div class="balance-hero-value" id="balanceValue">— <small>ج.م</small></div>
-          <div class="balance-hero-label" id="balanceLabel">جاري التحميل...</div>
-          <div class="balance-hero-stats">
-            <div class="balance-hero-stat"><div class="balance-hero-stat-value" id="bhRevenues">—</div><div class="balance-hero-stat-label"><i class="fas fa-arrow-down"></i> الإيرادات</div></div>
-            <div class="balance-hero-stat"><div class="balance-hero-stat-value" id="bhAssistance">—</div><div class="balance-hero-stat-label"><i class="fas fa-hands-helping"></i> المساعدات</div></div>
-            <div class="balance-hero-stat"><div class="balance-hero-stat-value" id="bhExpenses">—</div><div class="balance-hero-stat-label"><i class="fas fa-arrow-up"></i> المصروفات</div></div>
-          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon blue"><i class="fas fa-chart-pie"></i></div><h3>ملخص الصناديق</h3><button class="btn btn-primary btn-sm" onclick="loadDashboardFunds()"><i class="fas fa-sync-alt"></i></button></div>
+          <div class="fund-grid" id="dashboardFundGrid"></div>
         </div>
 
         <div class="kpi-grid">
@@ -427,6 +473,35 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           <div class="chart-card"><h4><i class="fas fa-chart-bar"></i> الحالة الاجتماعية</h4><div class="chart-wrap" style="height:220px"><canvas id="chartMarital"></canvas></div></div>
           <div class="chart-card"><h4><i class="fas fa-venus-mars"></i> النوع</h4><div class="chart-wrap" style="height:220px"><canvas id="chartGender"></canvas></div></div>
           <div class="chart-card"><h4><i class="fas fa-heartbeat"></i> الحالة الصحية</h4><div class="chart-wrap" style="height:220px"><canvas id="chartHealth"></canvas></div></div>
+        </div>
+      </section>
+
+      <!-- ═══════ 🆕 FUNDS PAGE ═══════ -->
+      <section class="page" id="page-funds">
+        <div class="card" style="padding:14px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border:none">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0D47A1,#1976D2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px"><i class="fas fa-vault"></i></div>
+            <div><h3 style="color:#0D47A1;font-size:16px;font-weight:900">أرصدة الصناديق</h3><p style="font-size:11.5px;color:#0D47A1;opacity:.8;margin-top:2px">كل صندوق منفصل: وارد، مصروف، متبقي</p></div>
+            <button class="btn btn-primary btn-sm" onclick="loadFundBalances(true)" style="margin-right:auto"><i class="fas fa-sync-alt"></i> تحديث</button>
+          </div>
+        </div>
+
+        <div class="grand-total">
+          <h3><i class="fas fa-coins"></i> الإجمالي العام لكل الصناديق</h3>
+          <div class="grand-total-value" id="fundPageGrandTotal">— <small>ج.م</small></div>
+          <div class="grand-total-stats">
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="fundPageRevenues">—</div><div class="grand-total-stat-label">إجمالي الوارد</div></div>
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="fundPageExpenses">—</div><div class="grand-total-stat-label">إجمالي المنصرف</div></div>
+            <div class="grand-total-stat"><div class="grand-total-stat-value" id="fundPageAssistance">—</div><div class="grand-total-stat-label">المساعدات</div></div>
+          </div>
+        </div>
+
+        <div class="fund-grid" id="fundsPageGrid"></div>
+
+        <!-- أرصدة البنوك -->
+        <div class="card">
+          <div class="card-head"><div class="card-icon teal"><i class="fas fa-building-columns"></i></div><h3>أرصدة البنوك الفعلية</h3></div>
+          <div class="fund-grid" id="banksGrid"></div>
         </div>
       </section>
 
@@ -681,10 +756,25 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
               <div class="card-head"><div class="card-icon orange"><i class="fas fa-hand-holding-usd"></i></div><h3>تفاصيل المساعدة</h3></div>
               <div class="form-grid g2">
                 <div class="form-group"><label class="form-label">النوع <span class="req">*</span></label><select class="form-select" id="assistType" onchange="toggleAssistFields()"><option value="">اختر</option><option value="مالية">مالية</option><option value="عينية">عينية</option></select></div>
-                <div class="form-group" id="assistFinancialNatureGroup" style="display:none"><label class="form-label">طبيعة المساعدة</label><select class="form-select" id="assistFinancialNature"><option>مساعدات شهرية</option><option>كفالة يتيم</option><option>مساعدة طارئة</option><option>سداد ديون</option><option>دعم علاج</option><option>دعم تعليمي</option><option>زكاة المال</option><option>أخرى</option></select></div>
+                <div class="form-group" id="assistFinancialNatureGroup" style="display:none"><label class="form-label">طبيعة المساعدة</label><select class="form-select" id="assistFinancialNature" onchange="updateAssistFundPreview()"><option>مساعدات شهرية</option><option>كفالة يتيم</option><option>مساعدة طارئة</option><option>سداد ديون</option><option>دعم علاج</option><option>دعم تعليمي</option><option>زكاة المال</option><option>أخرى</option></select></div>
                 <div class="form-group" id="assistInKindGroup" style="display:none"><label class="form-label">نوع العينية</label><select class="form-select" id="assistInKindType"><option value="">اختر</option><option>كرتونة رمضان</option><option>لحوم أضاحي</option><option>ملابس</option><option>أدوية</option><option>علاج مجاني</option><option>حقائب مدرسية</option><option>أخرى</option></select></div>
               </div>
-              <div class="form-grid g2">
+
+              <!-- 🆕 اختيار الصندوق -->
+              <div class="form-group" style="margin-top:8px">
+                <label class="form-label"><i class="fas fa-vault"></i> الصندوق <span class="req">*</span></label>
+                <select class="form-select" id="assistFundCode" onchange="updateAssistFundPreview()">
+                  <option value="GENERAL">🕌 التبرعات العامة</option>
+                  <option value="KAFALA">🧒 كفالة اليتيم</option>
+                  <option value="ZAKAT">💰 زكاة المال</option>
+                  <option value="MEMBERS">👥 اشتراكات الأعضاء</option>
+                </select>
+                <div class="fund-badge" id="assistFundPreview" data-fund="GENERAL">
+                  <i class="fas fa-wallet"></i> <span id="assistFundPreviewText">الرصيد المتاح: —</span>
+                </div>
+              </div>
+
+              <div class="form-grid g2" style="margin-top:10px">
                 <div class="form-group"><label class="form-label">التاريخ <span class="req">*</span></label><input type="date" class="form-input" id="assistDate"></div>
                 <div class="form-group"><label class="form-label">المبلغ <span class="req">*</span></label><div class="amount-input-wrap"><input class="form-input" type="number" id="assistAmount" placeholder="0" min="0"><span class="currency">جنيه</span></div></div>
               </div>
@@ -756,18 +846,28 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
             <div class="form-grid g2">
               <div class="form-group">
                 <label class="form-label">نوع الدفتر <span class="req">*</span></label>
-                <select class="form-select" id="revBookletType">
+                <select class="form-select" id="revBookletType" onchange="updateRevFundPreview()">
                   <option value="">اختر</option>
                   <option value="دفتر الكفالات">دفتر الكفالات</option>
                   <option value="دفتر الاشتراكات (مكتب التحفيظ)">دفتر الاشتراكات (مكتب التحفيظ)</option>
                   <option value="دفتر التبرعات العامة">دفتر التبرعات العامة</option>
                   <option value="دفتر زكاة المال">دفتر زكاة المال</option>
                   <option value="دفتر المساعدات العامة">دفتر المساعدات العامة</option>
+                  <option value="اشتراكات الحضانة">اشتراكات الحضانة</option>
                   <option value="أخرى">أخرى</option>
                 </select>
               </div>
               <div class="form-group"><label class="form-label">التاريخ <span class="req">*</span></label><input type="date" class="form-input" id="revDate"></div>
             </div>
+
+            <!-- 🆕 معاينة الصندوق -->
+            <div style="margin-bottom:12px">
+              <label class="form-label"><i class="fas fa-vault"></i> الصندوق المستلم</label>
+              <div class="fund-badge" id="revFundPreview" data-fund="GENERAL">
+                <i class="fas fa-wallet"></i> <span id="revFundPreviewText">اختر نوع الدفتر أولاً</span>
+              </div>
+            </div>
+
             <div class="form-grid g2">
               <div class="form-group"><label class="form-label">المبلغ <span class="req">*</span></label><div class="amount-input-wrap"><input class="form-input" type="number" id="revAmount" placeholder="0" min="0"><span class="currency">جنيه</span></div></div>
               <div class="form-group"><label class="form-label">ملاحظات</label><input class="form-input" id="revNotes"></div>
@@ -789,7 +889,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           <div class="card">
             <div class="card-head"><div class="card-icon blue"><i class="fas fa-filter"></i></div><h3>فلترة</h3><button class="btn btn-primary btn-sm" onclick="loadRevenues()"><i class="fas fa-sync-alt"></i> تحديث</button></div>
             <div class="form-grid g4">
-              <div class="form-group"><label class="form-label">الدفتر</label><select class="form-select" id="revHistBooklet"><option value="">الكل</option><option value="دفتر الكفالات">دفتر الكفالات</option><option value="دفتر الاشتراكات (مكتب التحفيظ)">دفتر الاشتراكات</option><option value="دفتر التبرعات العامة">دفتر التبرعات العامة</option><option value="دفتر زكاة المال">دفتر زكاة المال</option><option value="دفتر المساعدات العامة">دفتر المساعدات العامة</option><option value="أخرى">أخرى</option></select></div>
+              <div class="form-group"><label class="form-label">الدفتر</label><select class="form-select" id="revHistBooklet"><option value="">الكل</option><option value="دفتر الكفالات">دفتر الكفالات</option><option value="دفتر الاشتراكات (مكتب التحفيظ)">دفتر الاشتراكات</option><option value="دفتر التبرعات العامة">دفتر التبرعات العامة</option><option value="دفتر زكاة المال">دفتر زكاة المال</option><option value="دفتر المساعدات العامة">دفتر المساعدات العامة</option><option value="اشتراكات الحضانة">اشتراكات الحضانة</option><option value="أخرى">أخرى</option></select></div>
               <div class="form-group"><label class="form-label">من تاريخ</label><input type="date" class="form-input" id="revHistFrom"></div>
               <div class="form-group"><label class="form-label">إلى تاريخ</label><input type="date" class="form-input" id="revHistTo"></div>
               <div class="form-group"><label class="form-label">بحث</label><input class="form-input" id="revHistSearch"></div>
@@ -818,36 +918,42 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
             <div class="form-grid g2">
               <div class="form-group">
                 <label class="form-label">نوع المصروف <span class="req">*</span></label>
-                <select class="form-select" id="expType" onchange="toggleExpenseFields()">
+                <select class="form-select" id="expType">
                   <option value="">اختر</option>
-                  <option value="مساعدات شهرية">مساعدات شهرية (مستفيد محدد)</option>
-                  <option value="كفالات أيتام">كفالات أيتام (عائل محدد)</option>
                   <option value="مرتبات مكتب التحفيظ">مرتبات مكتب التحفيظ</option>
                   <option value="مرتبات الحضانة">مرتبات الحضانة</option>
+                  <option value="مرتبات إدارية">مرتبات إدارية</option>
+                  <option value="إيجار">إيجار</option>
+                  <option value="كهرباء ومياه">كهرباء ومياه</option>
+                  <option value="مستلزمات">مستلزمات</option>
+                  <option value="صيانة">صيانة</option>
                   <option value="كراتين رمضان">كراتين رمضان</option>
                   <option value="أخرى">أخرى</option>
                 </select>
               </div>
               <div class="form-group"><label class="form-label">التاريخ <span class="req">*</span></label><input type="date" class="form-input" id="expDate"></div>
             </div>
+
+            <!-- 🆕 اختيار الصندوق -->
+            <div class="form-group" style="margin-bottom:12px">
+              <label class="form-label"><i class="fas fa-vault"></i> صندوق الصرف <span class="req">*</span></label>
+              <select class="form-select" id="expFundCode" onchange="updateExpFundPreview()">
+                <option value="GENERAL">🕌 التبرعات العامة</option>
+                <option value="QURAN">📚 مكتب التحفيظ</option>
+                <option value="KINDER">🏫 الحضانة</option>
+                <option value="KAFALA">🧒 كفالة اليتيم</option>
+                <option value="ZAKAT">💰 زكاة المال</option>
+              </select>
+              <div class="fund-badge" id="expFundPreview" data-fund="GENERAL">
+                <i class="fas fa-wallet"></i> <span id="expFundPreviewText">الرصيد المتاح: —</span>
+              </div>
+            </div>
+
             <div class="form-group" style="margin-bottom:12px">
               <label class="form-label"><i class="fas fa-align-right"></i> البيان <span class="req">*</span></label>
               <input class="form-input" id="expNotes" placeholder="مثال: مرتب شهر أكتوبر 2025...">
             </div>
-            <div id="expBeneficiarySection" style="display:none">
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label"><i class="fas fa-user"></i> المستفيد <span class="req">*</span></label>
-                <div class="search-input-group"><input type="text" id="expBenefSearch" placeholder="ابحث عن المستفيد..." oninput="expenseBenefSearch(this.value)"></div>
-              </div>
-              <div id="expBenefResults"></div>
-              <div class="beneficiary-preview" id="expBenefPreview">
-                <div class="beneficiary-preview-head">
-                  <div class="beneficiary-avatar" id="expBpAvatar">—</div>
-                  <div class="beneficiary-preview-info"><strong id="expBpName">—</strong><span id="expBpFile">—</span></div>
-                  <button class="btn btn-ghost btn-sm" onclick="clearExpenseBenef()" style="margin-right:auto"><i class="fas fa-times"></i></button>
-                </div>
-              </div>
-            </div>
+
             <div class="form-grid g2">
               <div class="form-group"><label class="form-label">المبلغ <span class="req">*</span></label><div class="amount-input-wrap"><input class="form-input" type="number" id="expAmount" placeholder="0"><span class="currency">جنيه</span></div></div>
               <div class="form-group"><label class="form-label">تفصيل إضافي</label><input class="form-input" id="expSubtype"></div>
@@ -872,13 +978,139 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           <div class="card">
             <div class="card-head"><div class="card-icon blue"><i class="fas fa-filter"></i></div><h3>فلترة</h3><button class="btn btn-primary btn-sm" onclick="loadExpenses()"><i class="fas fa-sync-alt"></i> تحديث</button></div>
             <div class="form-grid g4">
-              <div class="form-group"><label class="form-label">النوع</label><select class="form-select" id="expHistType"><option value="">الكل</option><option value="مساعدات شهرية">مساعدات شهرية</option><option value="كفالات أيتام">كفالات أيتام</option><option value="مرتبات مكتب التحفيظ">مرتبات مكتب التحفيظ</option><option value="مرتبات الحضانة">مرتبات الحضانة</option><option value="كراتين رمضان">كراتين رمضان</option><option value="أخرى">أخرى</option></select></div>
+              <div class="form-group"><label class="form-label">النوع</label><select class="form-select" id="expHistType"><option value="">الكل</option><option value="مرتبات مكتب التحفيظ">مرتبات مكتب التحفيظ</option><option value="مرتبات الحضانة">مرتبات الحضانة</option><option value="مرتبات إدارية">مرتبات إدارية</option><option value="إيجار">إيجار</option><option value="كهرباء ومياه">كهرباء ومياه</option><option value="مستلزمات">مستلزمات</option><option value="صيانة">صيانة</option><option value="كراتين رمضان">كراتين رمضان</option><option value="أخرى">أخرى</option></select></div>
               <div class="form-group"><label class="form-label">من</label><input type="date" class="form-input" id="expHistFrom"></div>
               <div class="form-group"><label class="form-label">إلى</label><input type="date" class="form-input" id="expHistTo"></div>
               <div class="form-group"><label class="form-label">بحث</label><input class="form-input" id="expHistSearch"></div>
             </div>
           </div>
           <div class="card"><div class="card-head"><div class="card-icon red"><i class="fas fa-list"></i></div><h3>السجل</h3><div class="badge" id="expHistCount">0</div></div><div id="expensesList"></div></div>
+        </div>
+      </section>
+
+      <!-- ═══════ 🆕 LOANS ═══════ -->
+      <section class="page" id="page-loans">
+        <div class="card" style="padding:14px;background:linear-gradient(135deg,#FFEBEE,#FFCDD2);border:none">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#B71C1C,#E53935);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px"><i class="fas fa-right-left"></i></div>
+            <div><h3 style="color:#B71C1C;font-size:16px;font-weight:900">السلفات بين الصناديق</h3><p style="font-size:11.5px;color:#B71C1C;opacity:.8;margin-top:2px">سلفة مؤقتة تُسجَّل وتُسدَّد لاحقاً</p></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon red"><i class="fas fa-plus-circle"></i></div><h3>تسجيل سلفة جديدة</h3></div>
+          <div class="form-grid g2">
+            <div class="form-group">
+              <label class="form-label">من صندوق <span class="req">*</span></label>
+              <select class="form-select" id="loanFromFund">
+                <option value="GENERAL">🕌 التبرعات العامة</option>
+                <option value="KAFALA">🧒 كفالة اليتيم</option>
+                <option value="ZAKAT">💰 زكاة المال</option>
+                <option value="QURAN">📚 مكتب التحفيظ</option>
+                <option value="KINDER">🏫 الحضانة</option>
+                <option value="MEMBERS">👥 اشتراكات الأعضاء</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">إلى صندوق <span class="req">*</span></label>
+              <select class="form-select" id="loanToFund">
+                <option value="KAFALA">🧒 كفالة اليتيم</option>
+                <option value="ZAKAT">💰 زكاة المال</option>
+                <option value="QURAN">📚 مكتب التحفيظ</option>
+                <option value="KINDER">🏫 الحضانة</option>
+                <option value="MEMBERS">👥 اشتراكات الأعضاء</option>
+                <option value="GENERAL">🕌 التبرعات العامة</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid g2">
+            <div class="form-group"><label class="form-label">المبلغ <span class="req">*</span></label><div class="amount-input-wrap"><input class="form-input" type="number" id="loanAmount" placeholder="0"><span class="currency">جنيه</span></div></div>
+            <div class="form-group"><label class="form-label">التاريخ <span class="req">*</span></label><input type="date" class="form-input" id="loanDate"></div>
+          </div>
+          <div class="form-group"><label class="form-label">السبب</label><input class="form-input" id="loanReason" placeholder="مثال: عجز مؤقت في صندوق الكفالة"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn btn-gray btn-sm" onclick="resetLoanForm()"><i class="fas fa-redo"></i> تفريغ</button>
+            <button class="btn btn-danger" onclick="saveLoan()"><i class="fas fa-save"></i> حفظ السلفة</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon"><i class="fas fa-list"></i></div><h3>سجل السلفات</h3>
+            <select class="form-select" id="loanFilterStatus" style="width:140px;margin-right:auto" onchange="loadLoans()">
+              <option value="">الكل</option>
+              <option value="قائمة">قائمة</option>
+              <option value="مسددة">مسددة</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="loadLoans()"><i class="fas fa-sync-alt"></i></button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th>رقم السلفة</th><th>من صندوق</th><th>إلى صندوق</th><th>المبلغ</th>
+                <th>المُسدَّد</th><th>المتبقي</th><th>التاريخ</th><th>الحالة</th><th>السبب</th><th>إجراءات</th>
+              </tr></thead>
+              <tbody id="loansTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════ 🆕 RECONCILIATION ═══════ -->
+      <section class="page" id="page-reconciliation">
+        <div class="card" style="padding:14px;background:linear-gradient(135deg,#E0F2F1,#B2DFDB);border:none">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#00695C,#00897B);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px"><i class="fas fa-building-columns"></i></div>
+            <div><h3 style="color:#00695C;font-size:16px;font-weight:900">مطابقة البنك</h3><p style="font-size:11.5px;color:#00695C;opacity:.8;margin-top:2px">قارن الرصيد الفعلي مع الرصيد المتوقع من السجلات</p></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon teal"><i class="fas fa-plus-circle"></i></div><h3>تسجيل مطابقة جديدة</h3></div>
+          <div class="form-grid g2">
+            <div class="form-group">
+              <label class="form-label">البنك <span class="req">*</span></label>
+              <select class="form-select" id="reconBankName" onchange="updateReconPreview()">
+                <option value="MAIN">🏛️ بنك الجمعية الرئيسي</option>
+                <option value="KINDER">🏫 بنك الحضانة</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">التاريخ <span class="req">*</span></label><input type="date" class="form-input" id="reconDate"></div>
+          </div>
+
+          <div class="form-grid g2">
+            <div class="form-group">
+              <label class="form-label">الرصيد المتوقع (من السجلات)</label>
+              <input class="form-input" id="reconSystemBalance" readonly value="—">
+            </div>
+            <div class="form-group">
+              <label class="form-label">الرصيد الفعلي (من كشف الحساب) <span class="req">*</span></label>
+              <div class="amount-input-wrap"><input class="form-input" type="number" id="reconActualBalance" placeholder="0" step="0.01"><span class="currency">جنيه</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;padding:14px;background:var(--ink-50);border-radius:var(--r-md);border:1px solid var(--ink-100)">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong style="font-size:13px">الفرق:</strong>
+              <span id="reconDiff" style="font-size:18px;font-weight:900;color:var(--ink-500)">— جنيه</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:12px"><label class="form-label">ملاحظات</label><textarea class="form-textarea" id="reconNotes" style="min-height:60px" placeholder="أسباب الفرق إن وجد..."></textarea></div>
+
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn btn-gray btn-sm" onclick="resetReconForm()"><i class="fas fa-redo"></i> تفريغ</button>
+            <button class="btn btn-teal" onclick="saveReconciliation()"><i class="fas fa-save"></i> حفظ المطابقة</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon"><i class="fas fa-history"></i></div><h3>سجل المطابقات</h3><button class="btn btn-primary btn-sm" onclick="loadReconciliations()"><i class="fas fa-sync-alt"></i> تحديث</button></div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>#</th><th>التاريخ</th><th>البنك</th><th>الرصيد المتوقع</th><th>الرصيد الفعلي</th><th>الفرق</th><th>ملاحظات</th><th>حذف</th></tr></thead>
+              <tbody id="reconciliationsBody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -1145,11 +1377,75 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   </div>
 </div>
 
+<!-- 🆕 MODAL: تأكيد السلفة -->
+<div class="modal-overlay" id="loanConfirmModal">
+  <div class="modal-box" style="width:480px">
+    <div class="modal-head warn"><h3><i class="fas fa-exclamation-triangle"></i> تنبيه: رصيد غير كافٍ</h3><button class="modal-close" onclick="closeLoanConfirmModal()">&times;</button></div>
+    <div class="modal-body">
+      <div style="padding:14px;background:#FFEBEE;border-radius:var(--r-md);border:1px solid #FFCDD2;margin-bottom:14px">
+        <div style="font-size:12px;color:#C62828;font-weight:800;margin-bottom:6px"><i class="fas fa-info-circle"></i> تفاصيل المشكلة</div>
+        <p id="loanConfirmMessage" style="font-size:12.5px;line-height:1.7;color:#7A0000">—</p>
+      </div>
+      <div style="padding:14px;background:#F1F8E9;border-radius:var(--r-md);border:1px solid #C8E6C9">
+        <div style="font-size:12px;color:#2E7D32;font-weight:800;margin-bottom:6px"><i class="fas fa-lightbulb"></i> الحل المقترح</div>
+        <p style="font-size:12.5px;line-height:1.7;color:#1B5E20">تسجيل المبلغ المتبقي كـ <strong>سلفة من صندوق التبرعات العامة</strong> إلى صندوقك المختار، ليُسدد لاحقاً عند توفر التمويل.</p>
+      </div>
+      <div id="loanConfirmDetails" style="margin-top:14px;padding:12px;background:var(--ink-50);border-radius:var(--r-md);font-size:12px"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-gray btn-sm" onclick="closeLoanConfirmModal()">إلغاء</button>
+      <button class="btn btn-danger btn-sm" onclick="confirmLoanAndSave()"><i class="fas fa-handshake"></i> موافق، تسجيل السلفة</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: تسجيل السداد للسلفة -->
+<div class="modal-overlay" id="loanRepayModal">
+  <div class="modal-box" style="width:440px">
+    <div class="modal-head"><h3><i class="fas fa-money-bill-wave"></i> تسجيل سداد السلفة</h3><button class="modal-close" onclick="closeLoanRepayModal()">&times;</button></div>
+    <div class="modal-body">
+      <div id="loanRepayInfo" style="padding:12px;background:var(--ink-50);border-radius:var(--r-md);margin-bottom:14px;font-size:12.5px"></div>
+      <div class="form-grid g2">
+        <div class="form-group"><label class="form-label">المبلغ <span class="req">*</span></label><div class="amount-input-wrap"><input class="form-input" type="number" id="loanRepayAmount" placeholder="0"><span class="currency">جنيه</span></div></div>
+        <div class="form-group"><label class="form-label">التاريخ</label><input type="date" class="form-input" id="loanRepayDate"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-gray btn-sm" onclick="closeLoanRepayModal()">إلغاء</button>
+      <button class="btn btn-teal btn-sm" onclick="submitLoanRepay()"><i class="fas fa-check"></i> تأكيد السداد</button>
+    </div>
+  </div>
+</div>
+
 <div id="toastContainer"></div>
 
 <script>
 /* ═══════ GLOBAL STATE ═══════ */
 const API_URL = "https://script.google.com/macros/s/AKfycbwUUO7YoXEDVRsZ3PUUThoIfElIWI8xKlLuDmehz69FyMn9u0XxYbfiDbm9LwxtJXPduA/exec";
+
+const FUNDS_CONFIG = {
+  KAFALA:  { code: 'KAFALA',  name: 'كفالة اليتيم',      icon: '🧒', bank: 'MAIN',  color: '#C62828' },
+  ZAKAT:   { code: 'ZAKAT',   name: 'زكاة المال',        icon: '💰', bank: 'MAIN',  color: '#2E7D32' },
+  QURAN:   { code: 'QURAN',   name: 'مكتب التحفيظ',      icon: '📚', bank: 'MAIN',  color: '#1565C0' },
+  KINDER:  { code: 'KINDER',  name: 'الحضانة',           icon: '🏫', bank: 'KINDER',color: '#6A1B9A' },
+  MEMBERS: { code: 'MEMBERS', name: 'اشتراكات الأعضاء',  icon: '👥', bank: 'MAIN',  color: '#00897B' },
+  GENERAL: { code: 'GENERAL', name: 'التبرعات العامة',   icon: '🕌', bank: 'MAIN',  color: '#E65100' }
+};
+
+const BOOKLET_TO_FUND = {
+  'دفتر الكفالات': 'KAFALA',
+  'دفتر الاشتراكات (مكتب التحفيظ)': 'QURAN',
+  'دفتر زكاة المال': 'ZAKAT',
+  'دفتر التبرعات العامة': 'GENERAL',
+  'دفتر المساعدات العامة': 'GENERAL',
+  'اشتراكات الحضانة': 'KINDER',
+  'اشتراكات الأعضاء': 'MEMBERS',
+  'أخرى': 'GENERAL'
+};
+
+let fundBalancesCache = null;
+let pendingLoanData = null;
+let currentRepayLoan = null;
 
 let isEditMode = false, currentFileNumber = '', currentChildrenData = [], programsData = [], currentBeneficiaryStatus = 'نشط';
 let currentSearchResults = [];
@@ -1171,6 +1467,7 @@ let currentPaymentMember = null;
 let currentPaymentStatusData = null;
 let editingMemberId = null;
 let membersDebounceTimer = null;
+let currentLoans = [];
 
 /* ═══════ API FETCH ═══════ */
 function apiFetch(url, options) {
@@ -1180,11 +1477,14 @@ function apiFetch(url, options) {
 /* ═══════ NAV ═══════ */
 const PAGE_META = {
   dashboard:{title:'لوحة التحكم',subtitle:'نظرة شاملة على البيانات والرصيد'},
+  funds:{title:'أرصدة الصناديق',subtitle:'كل صندوق منفصل — وارد، مصروف، متبقي'},
   registration:{title:'تسجيل مستفيد',subtitle:'إضافة أو تعديل بيانات'},
   search:{title:'بحث الأسر والأبناء',subtitle:'بحث متقدم + فلتر الأبناء + تصدير ذكي'},
   assistance:{title:'صرف المساعدات',subtitle:'تسجيل ومتابعة المساعدات'},
   revenues:{title:'الإيرادات والدفاتر',subtitle:'تبرعات الدفاتر المعتمدة'},
   expenses:{title:'المصروفات',subtitle:'مرتبات + كراتين + مصروفات عامة'},
+  loans:{title:'السلفات بين الصناديق',subtitle:'سلفة مؤقتة تُسجَّل وتُسدَّد'},
+  reconciliation:{title:'مطابقة البنك',subtitle:'الرصيد الفعلي vs المتوقع'},
   members:{title:'الأعضاء والعضويات',subtitle:'إدارة الأعضاء وسداد الاشتراكات السنوية'},
   smart:{title:'أدوات ذكية',subtitle:'اقتراحات وتحليلات'},
   statistics:{title:'الإحصائيات',subtitle:'تقارير تفصيلية'},
@@ -1195,8 +1495,7 @@ const PAGE_META = {
 function switchPage(pageId, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => {
-    b.classList.remove('active'); b.classList.remove('rev-active');
-    b.classList.remove('exp-active'); b.classList.remove('mem-active');
+    b.classList.remove('active','rev-active','exp-active','mem-active','fund-active','loan-active','recon-active');
   });
   const target = document.getElementById('page-' + pageId);
   if (target) target.classList.add('active');
@@ -1205,24 +1504,493 @@ function switchPage(pageId, btn) {
     if (pageId === 'revenues') btn.classList.add('rev-active');
     if (pageId === 'expenses') btn.classList.add('exp-active');
     if (pageId === 'members') btn.classList.add('mem-active');
+    if (pageId === 'funds') btn.classList.add('fund-active');
+    if (pageId === 'loans') btn.classList.add('loan-active');
+    if (pageId === 'reconciliation') btn.classList.add('recon-active');
   }
   const meta = PAGE_META[pageId] || { title: '', subtitle: '' };
   document.getElementById('pageTitle').textContent = meta.title;
   document.getElementById('pageSubtitle').textContent = meta.subtitle;
-  if (pageId === 'dashboard') loadDashboard();
+  if (pageId === 'dashboard') { loadDashboard(); loadDashboardFunds(); }
+  else if (pageId === 'funds') loadFundBalances(true);
   else if (pageId === 'statistics') loadAllStatistics();
   else if (pageId === 'search') loadProgramsToSearchSelect();
   else if (pageId === 'audit') loadAuditLog();
-  else if (pageId === 'revenues') loadBookletSummary();
-  else if (pageId === 'expenses') loadExpenseSummary();
+  else if (pageId === 'revenues') { loadBookletSummary(); loadFundBalances(); }
+  else if (pageId === 'expenses') { loadExpenseSummary(); loadFundBalances(); }
   else if (pageId === 'financial') { initFinancialYearSelect(); loadFinancialSummary(); }
   else if (pageId === 'members') { initPaymentYearSelect(); initStatusYearSelect(); loadMembersStats(); loadMembers(); }
+  else if (pageId === 'loans') { loadLoans(); loadFundBalances(); }
+  else if (pageId === 'reconciliation') { loadReconciliations(); updateReconPreview(); }
+  else if (pageId === 'assistance') { loadFundBalances(); }
 }
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
   const c = document.getElementById('sidebar').classList.contains('collapsed');
   document.getElementById('sidebarToggleIcon').className = c ? 'fas fa-chevron-left' : 'fas fa-chevron-right';
+}
+
+/* ═══════ 🆕 FUND BALANCES ═══════ */
+async function loadFundBalances(forceRefresh) {
+  try {
+    const url = `${API_URL}?action=getFundBalances${forceRefresh ? '&forceRefresh=true' : ''}`;
+    const r = await apiFetch(url);
+    const data = await r.json();
+    if (data.error) return;
+    fundBalancesCache = data;
+    renderFundBalances(data);
+    renderBanksBalance();
+    renderDashboardFundsGrid(data);
+  } catch (e) { console.warn(e); }
+}
+
+function renderFundBalances(data) {
+  if (!data || !data.funds) return;
+  const grid = document.getElementById('fundsPageGrid');
+  if (!grid) return;
+
+  // Grand total
+  const gt = data.grandTotal || {};
+  document.getElementById('fundPageGrandTotal').innerHTML = `${(gt.balance || 0).toLocaleString('ar-EG')} <small>ج.م</small>`;
+  document.getElementById('fundPageRevenues').textContent = (gt.revenues || 0).toLocaleString('ar-EG');
+  document.getElementById('fundPageExpenses').textContent = (gt.expenses || 0).toLocaleString('ar-EG');
+  document.getElementById('fundPageAssistance').textContent = (gt.assistance || 0).toLocaleString('ar-EG');
+
+  let html = '';
+  const order = ['KAFALA','ZAKAT','QURAN','KINDER','MEMBERS','GENERAL'];
+  order.forEach(code => {
+    const f = data.funds[code];
+    if (!f) return;
+    const balClass = f.balance >= 0 ? 'pos' : 'neg';
+    html += `<div class="fund-card" data-fund="${code}" onclick="openFundTransactions('${code}')">
+      <div class="fund-card-head">
+        <div class="fund-card-icon" style="background:${FUNDS_CONFIG[code].color}22;color:${FUNDS_CONFIG[code].color}">${f.icon}</div>
+        <div>
+          <div class="fund-card-title">${esc(f.name)}</div>
+          <div class="fund-card-bank">${f.bank === 'KINDER' ? '🏫 بنك الحضانة' : '🏛️ بنك الجمعية'}</div>
+        </div>
+      </div>
+      <div class="fund-card-balance ${balClass}">${(f.balance || 0).toLocaleString('ar-EG')} <small>ج.م</small></div>
+      <div class="fund-card-stats">
+        <div class="fund-card-stat"><span>وارد:</span><strong style="color:#00897B">${(f.revenues + (f.loansIn || 0)).toLocaleString('ar-EG')}</strong></div>
+        <div class="fund-card-stat"><span>منصرف:</span><strong style="color:#C62828">${(f.expenses + f.assistance + (f.loansOut || 0)).toLocaleString('ar-EG')}</strong></div>
+      </div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function renderBanksBalance() {
+  if (!fundBalancesCache || !fundBalancesCache.funds) return;
+  const banks = { MAIN: { name: '🏛️ بنك الجمعية الرئيسي', balance: 0, funds: [] }, KINDER: { name: '🏫 بنك الحضانة', balance: 0, funds: [] } };
+  Object.values(fundBalancesCache.funds).forEach(f => {
+    const bank = f.bank === 'KINDER' ? 'KINDER' : 'MAIN';
+    banks[bank].balance += f.balance;
+    banks[bank].funds.push(f);
+  });
+  const grid = document.getElementById('banksGrid');
+  if (!grid) return;
+  let html = '';
+  Object.values(banks).forEach(b => {
+    html += `<div class="fund-card" style="cursor:default">
+      <div class="fund-card-head">
+        <div class="fund-card-icon" style="background:#0D47A122;color:#0D47A1"><i class="fas fa-building-columns"></i></div>
+        <div>
+          <div class="fund-card-title">${b.name}</div>
+          <div class="fund-card-bank">${b.funds.length} صناديق مرتبطة</div>
+        </div>
+      </div>
+      <div class="fund-card-balance ${b.balance >= 0 ? 'pos' : 'neg'}">${b.balance.toLocaleString('ar-EG')} <small>ج.م</small></div>
+      <div style="font-size:11px;color:var(--ink-500);margin-top:8px">${b.funds.map(f => `${f.icon} ${f.name}: ${f.balance.toLocaleString('ar-EG')} ج`).join(' • ')}</div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function renderDashboardFundsGrid(data) {
+  const grid = document.getElementById('dashboardFundGrid');
+  if (!grid || !data || !data.funds) return;
+  let html = '';
+  const order = ['KAFALA','ZAKAT','QURAN','KINDER','MEMBERS','GENERAL'];
+  order.forEach(code => {
+    const f = data.funds[code];
+    if (!f) return;
+    html += `<div class="fund-card" data-fund="${code}" onclick="switchPage('funds',document.querySelector('[data-page=&quot;funds&quot;]'))">
+      <div class="fund-card-head">
+        <div class="fund-card-icon" style="background:${FUNDS_CONFIG[code].color}22;color:${FUNDS_CONFIG[code].color}">${f.icon}</div>
+        <div><div class="fund-card-title">${esc(f.name)}</div></div>
+      </div>
+      <div class="fund-card-balance ${f.balance >= 0 ? 'pos' : 'neg'}">${(f.balance || 0).toLocaleString('ar-EG')} <small>ج.م</small></div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+async function loadDashboardFunds() {
+  try {
+    const r = await apiFetch(`${API_URL}?action=getBankBalances`);
+    const banks = await r.json();
+    const grandTotal = (banks.MAIN?.balance || 0) + (banks.KINDER?.balance || 0);
+    document.getElementById('grandTotalValue').innerHTML = `${grandTotal.toLocaleString('ar-EG')} <small>ج.م</small>`;
+    if (fundBalancesCache && fundBalancesCache.grandTotal) {
+      const gt = fundBalancesCache.grandTotal;
+      document.getElementById('gtRevenues').textContent = (gt.revenues || 0).toLocaleString('ar-EG');
+      document.getElementById('gtAssistance').textContent = (gt.assistance || 0).toLocaleString('ar-EG');
+      document.getElementById('gtExpenses').textContent = (gt.expenses || 0).toLocaleString('ar-EG');
+    }
+  } catch (e) {}
+}
+
+function getFundBalance(code) {
+  if (!fundBalancesCache || !fundBalancesCache.funds) return 0;
+  const f = fundBalancesCache.funds[code];
+  return f ? f.balance : 0;
+}
+
+function openFundTransactions(code) {
+  loadFundTransactions(code);
+}
+
+async function loadFundTransactions(code) {
+  try {
+    Swal.fire({
+      title: FUNDS_CONFIG[code].icon + ' ' + FUNDS_CONFIG[code].name,
+      html: '<div style="text-align:center;padding:20px"><i class="fas fa-spinner fa-spin" style="font-size:30px;color:#1976D2"></i><p style="margin-top:10px;color:#64748B">جاري التحميل...</p></div>',
+      width: 900,
+      showConfirmButton: false,
+      didOpen: async () => {
+        try {
+          const r = await apiFetch(`${API_URL}?action=getFundTransactions&fundCode=${code}`);
+          const data = await r.json();
+          if (data.error) { Swal.update({ html: `<p style="color:#C62828">${data.error}</p>`, showConfirmButton: true, confirmButtonText: 'إغلاق' }); return; }
+          let html = `<div style="text-align:right;max-height:60vh;overflow-y:auto">
+            <div style="padding:12px;background:#F1F8E9;border-radius:10px;margin-bottom:12px">
+              <strong>إجمالي الحركات:</strong> ${data.count || 0} عملية
+            </div>`;
+          if (!data.transactions || !data.transactions.length) {
+            html += '<p style="text-align:center;color:#64748B;padding:20px">لا توجد حركات لهذا الصندوق</p>';
+          } else {
+            html += '<table style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr>' +
+              '<th style="background:#1976D2;color:#fff;padding:8px;border:1px solid #ddd">التاريخ</th>' +
+              '<th style="background:#1976D2;color:#fff;padding:8px;border:1px solid #ddd">النوع</th>' +
+              '<th style="background:#1976D2;color:#fff;padding:8px;border:1px solid #ddd">الوصف</th>' +
+              '<th style="background:#1976D2;color:#fff;padding:8px;border:1px solid #ddd">المبلغ</th>' +
+              '</tr></thead><tbody>';
+            data.transactions.slice(0, 100).forEach(t => {
+              const color = t.direction === 'in' ? '#2E7D32' : '#C62828';
+              const sign = t.direction === 'in' ? '+' : '-';
+              html += `<tr>
+                <td style="padding:6px;border:1px solid #ddd;text-align:center">${esc(t.date)}</td>
+                <td style="padding:6px;border:1px solid #ddd;text-align:center">${esc(t.type)}</td>
+                <td style="padding:6px;border:1px solid #ddd;text-align:right">${esc(t.description)}<br><small style="color:#64748B">${esc(t.notes)}</small></td>
+                <td style="padding:6px;border:1px solid #ddd;text-align:center;font-weight:800;color:${color}">${sign} ${t.amount.toLocaleString('ar-EG')}</td>
+              </tr>`;
+            });
+            html += '</tbody></table>';
+          }
+          html += '</div>';
+          Swal.update({ html, showConfirmButton: true, confirmButtonText: 'إغلاق', confirmButtonColor: '#1976D2' });
+        } catch (e) {
+          Swal.update({ html: `<p style="color:#C62828">تعذّر التحميل</p>`, showConfirmButton: true, confirmButtonText: 'إغلاق' });
+        }
+      }
+    });
+  } catch (e) { showMsg('message', 'خطأ', 'error'); }
+}
+
+/* ═══════ 🆕 LOAN MODAL ═══════ */
+function showLoanConfirmModal(payload) {
+  const fundCode = payload.fundCode;
+  const fundName = FUNDS_CONFIG[fundCode].name;
+  const currentBal = getFundBalance(fundCode);
+  const needed = payload.amount;
+  const shortfall = needed - currentBal;
+
+  document.getElementById('loanConfirmMessage').innerHTML =
+    `صندوق <strong>${fundName}</strong> رصيده الحالي <strong>${currentBal.toLocaleString('ar-EG')} ج.م</strong> وهو أقل من المبلغ المطلوب <strong>${needed.toLocaleString('ar-EG')} ج.م</strong>.`;
+  document.getElementById('loanConfirmDetails').innerHTML =
+    `<div style="display:flex;justify-content:space-between;padding:6px 0"><span>المبلغ المطلوب:</span><strong>${needed.toLocaleString('ar-EG')} ج</strong></div>
+     <div style="display:flex;justify-content:space-between;padding:6px 0"><span>الرصيد المتاح:</span><strong style="color:#2E7D32">${currentBal.toLocaleString('ar-EG')} ج</strong></div>
+     <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px dashed #CBD5E1;margin-top:6px;padding-top:10px"><span>مبلغ السلفة المطلوب:</span><strong style="color:#C62828">${shortfall.toLocaleString('ar-EG')} ج</strong></div>`;
+
+  pendingLoanData = { ...payload, shortfall, fromFund: 'GENERAL', toFund: fundCode };
+  document.getElementById('loanConfirmModal').classList.add('open');
+}
+
+function closeLoanConfirmModal() {
+  document.getElementById('loanConfirmModal').classList.remove('open');
+  pendingLoanData = null;
+}
+
+async function confirmLoanAndSave() {
+  if (!pendingLoanData) return;
+  const { shortfall, toFund, action, assistPayload } = pendingLoanData;
+
+  try {
+    // 1) سجّل السلفة
+    const loanPayload = {
+      action: 'saveLoan',
+      fromFund: 'GENERAL',
+      toFund: toFund,
+      amount: shortfall,
+      loanDate: new Date().toISOString().split('T')[0],
+      reason: `سلفة تلقائية لتغطية عجز صندوق ${FUNDS_CONFIG[toFund].name}`
+    };
+    const lr = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(loanPayload) });
+    const lres = await lr.json();
+    if (lres.status !== 'success') { showMsg('message', 'فشل تسجيل السلفة: ' + lres.message, 'error'); return; }
+
+    // 2) سجّل العملية الأصلية
+    if (action === 'assist') {
+      const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(assistPayload) });
+      const res = await r.json();
+      if (res.status === 'success') {
+        showMsg('message', `✅ تم تسجيل السلفة + الصرف`, 'success');
+        closeLoanConfirmModal();
+        resetAssistForm();
+        invalidateFundCache();
+      } else {
+        showMsg('message', 'تم السلفة لكن فشل الصرف: ' + res.message, 'error');
+      }
+    }
+  } catch (e) { showMsg('message', 'خطأ في الاتصال', 'error'); }
+}
+
+function invalidateFundCache() {
+  fundBalancesCache = null;
+  loadFundBalances(true);
+}
+
+/* ═══════ 🆕 LOANS PAGE ═══════ */
+async function saveLoan() {
+  const fromFund = document.getElementById('loanFromFund').value;
+  const toFund = document.getElementById('loanToFund').value;
+  const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+  const loanDate = document.getElementById('loanDate').value;
+  const reason = document.getElementById('loanReason').value.trim();
+
+  if (fromFund === toFund) { showMsg('message', 'لا يمكن السلفة لنفس الصندوق', 'error'); return; }
+  if (amount <= 0) { showMsg('message', 'أدخل مبلغاً صحيحاً', 'error'); return; }
+  if (!loanDate) { showMsg('message', 'أدخل تاريخ السلفة', 'error'); return; }
+
+  // تحقق من الرصيد
+  const fromBalance = getFundBalance(fromFund);
+  if (fromBalance < amount) {
+    const conf = await Swal.fire({
+      title: 'رصيد الصندوق غير كافٍ',
+      html: `صندوق <strong>${FUNDS_CONFIG[fromFund].name}</strong> رصيده <strong>${fromBalance.toLocaleString('ar-EG')} ج</strong> وهو أقل من مبلغ السلفة.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'متابعة على أي حال',
+      cancelButtonText: 'إلغاء',
+      confirmButtonColor: '#C62828'
+    });
+    if (!conf.isConfirmed) return;
+  }
+
+  const payload = { action: 'saveLoan', fromFund, toFund, amount, loanDate, reason };
+  showMsg('message', 'جاري الحفظ...', 'info');
+  try {
+    const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const res = await r.json();
+    if (res.status === 'success') {
+      showMsg('message', `✅ تم تسجيل السلفة (${res.recordId || ''})`, 'success');
+      resetLoanForm();
+      loadLoans();
+      invalidateFundCache();
+    } else showMsg('message', res.message || 'خطأ', 'error');
+  } catch { showMsg('message', 'خطأ في الاتصال', 'error'); }
+}
+
+function resetLoanForm() {
+  document.getElementById('loanFromFund').value = 'GENERAL';
+  document.getElementById('loanToFund').value = 'KAFALA';
+  document.getElementById('loanAmount').value = '';
+  document.getElementById('loanDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('loanReason').value = '';
+}
+
+async function loadLoans() {
+  const tbody = document.getElementById('loansTableBody');
+  tbody.innerHTML = '<tr><td colspan="10" style="padding:30px;text-align:center;color:var(--ink-500)"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+  try {
+    const status = document.getElementById('loanFilterStatus')?.value || '';
+    let url = `${API_URL}?action=getLoans`;
+    if (status) url += `&status=${encodeURIComponent(status)}`;
+    const r = await apiFetch(url);
+    const rows = await r.json();
+    if (!Array.isArray(rows) || !rows.length) {
+      tbody.innerHTML = '<tr><td colspan="10" style="padding:30px;text-align:center;color:var(--ink-500)">لا توجد سلفات</td></tr>';
+      currentLoans = [];
+      return;
+    }
+    currentLoans = rows;
+    let html = '';
+    rows.forEach(l => {
+      const statusClass = l.Status === 'مسددة' ? 'loan-paid' : 'loan-active';
+      html += `<tr>
+        <td><strong>${esc(l.RecordID)}</strong></td>
+        <td>${esc(l.FromFundName)}</td>
+        <td>${esc(l.ToFundName)}</td>
+        <td><strong style="color:var(--purple-600)">${(l.Amount || 0).toLocaleString('ar-EG')} ج</strong></td>
+        <td>${(l.RepaidAmount || 0).toLocaleString('ar-EG')} ج</td>
+        <td><strong style="color:${l.Remaining > 0 ? '#C62828' : '#2E7D32'}">${(l.Remaining || 0).toLocaleString('ar-EG')} ج</strong></td>
+        <td style="font-size:11px">${esc(l.LoanDate)}</td>
+        <td><span class="status-pill ${statusClass}">${esc(l.Status)}</span></td>
+        <td style="font-size:11px;max-width:180px">${esc(l.Reason || '—')}</td>
+        <td>
+          <div style="display:flex;gap:4px;justify-content:center">
+            ${l.Status !== 'مسددة' ? `<button class="btn btn-teal btn-xs" onclick="openRepayModal('${esc(l.RecordID)}')" title="سداد"><i class="fas fa-money-bill-wave"></i></button>` : ''}
+            <button class="btn btn-danger btn-xs" onclick="confirmDeleteLoan('${esc(l.RecordID)}')" title="حذف"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    });
+    tbody.innerHTML = html;
+  } catch (e) { tbody.innerHTML = '<tr><td colspan="10" style="padding:30px;color:var(--danger-600);text-align:center">تعذّر التحميل</td></tr>'; }
+}
+
+function openRepayModal(recordId) {
+  const loan = currentLoans.find(l => l.RecordID === recordId);
+  if (!loan) return;
+  currentRepayLoan = loan;
+  document.getElementById('loanRepayInfo').innerHTML =
+    `<div><strong>من:</strong> ${esc(loan.FromFundName)}</div>
+     <div style="margin-top:4px"><strong>إلى:</strong> ${esc(loan.ToFundName)}</div>
+     <div style="margin-top:4px"><strong>المبلغ الأصلي:</strong> ${loan.Amount.toLocaleString('ar-EG')} ج</div>
+     <div style="margin-top:4px"><strong>المُسدَّد:</strong> ${loan.RepaidAmount.toLocaleString('ar-EG')} ج</div>
+     <div style="margin-top:4px;color:#C62828;font-weight:800"><strong>المتبقي:</strong> ${loan.Remaining.toLocaleString('ar-EG')} ج</div>`;
+  document.getElementById('loanRepayAmount').value = loan.Remaining;
+  document.getElementById('loanRepayDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('loanRepayModal').classList.add('open');
+}
+
+function closeLoanRepayModal() {
+  document.getElementById('loanRepayModal').classList.remove('open');
+  currentRepayLoan = null;
+}
+
+async function submitLoanRepay() {
+  if (!currentRepayLoan) return;
+  const amount = parseFloat(document.getElementById('loanRepayAmount').value) || 0;
+  const repayDate = document.getElementById('loanRepayDate').value;
+  if (amount <= 0) { showMsg('message', 'أدخل مبلغاً', 'error'); return; }
+  try {
+    const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'repayLoan', recordId: currentRepayLoan.RecordID, amount, repayDate }) });
+    const res = await r.json();
+    if (res.status === 'success') {
+      showMsg('message', '✅ ' + res.message, 'success');
+      closeLoanRepayModal();
+      loadLoans();
+      invalidateFundCache();
+    } else showMsg('message', res.message || 'خطأ', 'error');
+  } catch { showMsg('message', 'خطأ', 'error'); }
+}
+
+async function confirmDeleteLoan(recordId) {
+  const conf = await Swal.fire({ title: 'تأكيد الحذف', text: `حذف السلفة ${recordId}؟`, icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم', cancelButtonText: 'إلغاء', confirmButtonColor: '#C62828' });
+  if (!conf.isConfirmed) return;
+  try {
+    const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteLoan', recordId }) });
+    const res = await r.json();
+    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadLoans(); invalidateFundCache(); }
+    else showMsg('message', res.message || 'خطأ', 'error');
+  } catch { showMsg('message', 'خطأ', 'error'); }
+}
+
+/* ═══════ 🆕 RECONCILIATION ═══════ */
+async function updateReconPreview() {
+  const bankName = document.getElementById('reconBankName').value;
+  if (!fundBalancesCache) await loadFundBalances();
+  let systemBalance = 0;
+  if (fundBalancesCache && fundBalancesCache.funds) {
+    Object.values(fundBalancesCache.funds).forEach(f => {
+      const bank = f.bank === 'KINDER' ? 'KINDER' : 'MAIN';
+      if (bank === bankName) systemBalance += f.balance;
+    });
+  }
+  document.getElementById('reconSystemBalance').value = systemBalance.toLocaleString('ar-EG');
+  document.getElementById('reconSystemBalance').dataset.raw = systemBalance;
+  updateReconDiff();
+}
+
+function updateReconDiff() {
+  const systemBal = parseFloat(document.getElementById('reconSystemBalance').dataset.raw) || 0;
+  const actualBal = parseFloat(document.getElementById('reconActualBalance').value) || 0;
+  const diff = actualBal - systemBal;
+  const el = document.getElementById('reconDiff');
+  el.textContent = `${diff.toLocaleString('ar-EG')} جنيه`;
+  el.style.color = Math.abs(diff) < 1 ? '#2E7D32' : (diff > 0 ? '#1976D2' : '#C62828');
+}
+
+document.getElementById('reconActualBalance')?.addEventListener('input', updateReconDiff);
+
+async function saveReconciliation() {
+  const reconDate = document.getElementById('reconDate').value;
+  const bankName = document.getElementById('reconBankName').value;
+  const actualBalance = parseFloat(document.getElementById('reconActualBalance').value) || 0;
+  const notes = document.getElementById('reconNotes').value.trim();
+  if (!reconDate) { showMsg('message', 'أدخل التاريخ', 'error'); return; }
+  if (!document.getElementById('reconActualBalance').value) { showMsg('message', 'أدخل الرصيد الفعلي', 'error'); return; }
+
+  try {
+    const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveReconciliation', reconDate, bankName, actualBalance, notes }) });
+    const res = await r.json();
+    if (res.status === 'success') {
+      showMsg('message', `✅ تم حفظ المطابقة (فرق: ${(res.difference || 0).toLocaleString('ar-EG')} ج)`, 'success');
+      resetReconForm();
+      loadReconciliations();
+    } else showMsg('message', res.message || 'خطأ', 'error');
+  } catch { showMsg('message', 'خطأ', 'error'); }
+}
+
+function resetReconForm() {
+  document.getElementById('reconBankName').value = 'MAIN';
+  document.getElementById('reconDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('reconActualBalance').value = '';
+  document.getElementById('reconNotes').value = '';
+  updateReconPreview();
+}
+
+async function loadReconciliations() {
+  const tbody = document.getElementById('reconciliationsBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="8" style="padding:30px;text-align:center;color:var(--ink-500)"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+  try {
+    const r = await apiFetch(`${API_URL}?action=getReconciliations`);
+    const rows = await r.json();
+    if (!Array.isArray(rows) || !rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" style="padding:30px;text-align:center;color:var(--ink-500)">لا توجد مطابقات</td></tr>';
+      return;
+    }
+    let html = '';
+    rows.forEach((rec, i) => {
+      const diffColor = Math.abs(rec.Difference) < 1 ? '#2E7D32' : (rec.Difference > 0 ? '#1976D2' : '#C62828');
+      html += `<tr>
+        <td>${i + 1}</td>
+        <td>${esc(rec.ReconDate)}</td>
+        <td>${rec.BankName === 'KINDER' ? '🏫 بنك الحضانة' : '🏛️ البنك الرئيسي'}</td>
+        <td>${(rec.SystemBalance || 0).toLocaleString('ar-EG')} ج</td>
+        <td><strong>${(rec.ActualBalance || 0).toLocaleString('ar-EG')} ج</strong></td>
+        <td><strong style="color:${diffColor}">${(rec.Difference || 0).toLocaleString('ar-EG')} ج</strong></td>
+        <td style="font-size:11px;max-width:200px">${esc(rec.Notes || '—')}</td>
+        <td><button class="btn btn-danger btn-xs" onclick="confirmDeleteRecon('${esc(rec.RecordID)}')"><i class="fas fa-trash"></i></button></td>
+      </tr>`;
+    });
+    tbody.innerHTML = html;
+  } catch (e) { tbody.innerHTML = '<tr><td colspan="8" style="padding:30px;color:var(--danger-600);text-align:center">تعذّر التحميل</td></tr>'; }
+}
+
+async function confirmDeleteRecon(recordId) {
+  const conf = await Swal.fire({ title: 'تأكيد', text: `حذف مطابقة ${recordId}؟`, icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم', cancelButtonText: 'إلغاء', confirmButtonColor: '#C62828' });
+  if (!conf.isConfirmed) return;
+  try {
+    const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteReconciliation', recordId }) });
+    const res = await r.json();
+    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadReconciliations(); }
+    else showMsg('message', res.message || 'خطأ', 'error');
+  } catch { showMsg('message', 'خطأ', 'error'); }
 }
 
 /* ═══════ NID EXTRACTION ═══════ */
@@ -1426,20 +2194,20 @@ function updateChildrenRows(shouldPreserve) {
   if (count === 0) { con.innerHTML = `<div style="text-align:center;padding:30px;color:var(--ink-500);background:var(--ink-50);border-radius:var(--r-md);border:2px dashed var(--brand-400)"><i class="fas fa-child" style="font-size:32px;color:var(--brand-400);margin-bottom:8px;display:block"></i><p style="font-size:12px">قم بزيادة عدد الأبناء</p></div>`; return; }
   const today = new Date().toISOString().split('T')[0];
   let html = `<div style="display:grid;gap:8px;padding:10px;background:var(--ink-50);border-radius:var(--r-md);border:1px solid var(--ink-100)">`;
-for (let i = 1; i <= count; i++) {
-  html += `<div class="child-row" data-idx="${i}" style="display:grid;grid-template-columns:32px 2fr 1.3fr 0.8fr 1.1fr 0.6fr 1.1fr 1.1fr 0.9fr 32px;gap:6px;align-items:center;background:#fff;padding:7px;border-radius:var(--r-sm);border:1px solid var(--ink-100)">
-    <div style="width:22px;height:22px;border-radius:50%;background:var(--brand-600);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;margin:auto">${i}</div>
-    <div><input type="text" class="child-name" placeholder="الاسم" style="padding:5px 7px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"></div>
-    <div><input type="text" class="child-nationalId" maxlength="14" oninput="onChildNIDInput(${i}, this.value)" placeholder="الرقم القومي" style="padding:5px 7px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"></div>
-    <div><select class="child-gender" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"><option value="">—</option><option>الزوجة</option><option>ابن</option><option>ابنة</option></select></div>
-    <div><input type="date" class="child-birthDate" max="${today}" onchange="calcChildAge(${i})" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"></div>
-    <div><div class="child-age-badge" id="childAge${i}" style="background:var(--brand-100);color:var(--brand-800);padding:5px 0;border-radius:5px;text-align:center;font-size:11px;font-weight:800">--</div></div>
-    <div><select class="child-education" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>حضانة</option><option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option><option>جامعي</option><option>خريج</option><option>غير ملتحق</option></select></div>
-    <div><select class="child-health" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>صحي</option><option>مريض مزمن</option><option>معاق</option><option>أمراض أخرى</option></select></div>
-    <div><select class="child-status" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>يتيم</option><option>فقير</option><option>عادي</option><option>مستفيد</option></select></div>
-    <div><button onclick="delChild(${i})" style="width:24px;height:24px;border-radius:50%;background:var(--danger-100);border:1px solid #FFCDD2;color:var(--danger-600);font-size:10.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:auto"><i class="fas fa-times"></i></button></div>
-  </div>`;
-}
+  for (let i = 1; i <= count; i++) {
+    html += `<div class="child-row" data-idx="${i}" style="display:grid;grid-template-columns:32px 2fr 1.3fr 0.8fr 1.1fr 0.6fr 1.1fr 1.1fr 0.9fr 32px;gap:6px;align-items:center;background:#fff;padding:7px;border-radius:var(--r-sm);border:1px solid var(--ink-100)">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--brand-600);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;margin:auto">${i}</div>
+      <div><input type="text" class="child-name" placeholder="الاسم" style="padding:5px 7px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"></div>
+      <div><input type="text" class="child-nationalId" maxlength="14" oninput="onChildNIDInput(${i}, this.value)" placeholder="الرقم القومي" style="padding:5px 7px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"></div>
+      <div><select class="child-gender" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11.5px;width:100%"><option value="">—</option><option>الزوجة</option><option>ابن</option><option>ابنة</option></select></div>
+      <div><input type="date" class="child-birthDate" max="${today}" onchange="calcChildAge(${i})" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"></div>
+      <div><div class="child-age-badge" id="childAge${i}" style="background:var(--brand-100);color:var(--brand-800);padding:5px 0;border-radius:5px;text-align:center;font-size:11px;font-weight:800">--</div></div>
+      <div><select class="child-education" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>حضانة</option><option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option><option>جامعي</option><option>خريج</option><option>غير ملتحق</option></select></div>
+      <div><select class="child-health" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>صحي</option><option>مريض مزمن</option><option>معاق</option><option>أمراض أخرى</option></select></div>
+      <div><select class="child-status" style="padding:5px;border:1px solid var(--ink-300);border-radius:5px;font-family:'Cairo';font-size:11px;width:100%"><option value="">—</option><option>يتيم</option><option>فقير</option><option>عادي</option><option>مستفيد</option></select></div>
+      <div><button onclick="delChild(${i})" style="width:24px;height:24px;border-radius:50%;background:var(--danger-100);border:1px solid #FFCDD2;color:var(--danger-600);font-size:10.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:auto"><i class="fas fa-times"></i></button></div>
+    </div>`;
+  }
   html += '</div>';
   con.innerHTML = html;
   const marital = document.getElementById('maritalStatus').value;
@@ -1969,6 +2737,18 @@ function toggleAssistFields() {
   const t = document.getElementById('assistType').value;
   document.getElementById('assistFinancialNatureGroup').style.display = t === 'مالية' ? 'flex' : 'none';
   document.getElementById('assistInKindGroup').style.display = t === 'عينية' ? 'flex' : 'none';
+  updateAssistFundPreview();
+}
+
+function updateAssistFundPreview() {
+  const fundCode = document.getElementById('assistFundCode')?.value || 'GENERAL';
+  const previewEl = document.getElementById('assistFundPreview');
+  const textEl = document.getElementById('assistFundPreviewText');
+  if (!previewEl || !textEl) return;
+  previewEl.dataset.fund = fundCode;
+  const bal = getFundBalance(fundCode);
+  textEl.textContent = `الرصيد المتاح: ${bal.toLocaleString('ar-EG')} ج.م`;
+  previewEl.style.color = bal < 0 ? '#C62828' : '';
 }
 
 function setAmount(v) { document.getElementById('assistAmount').value = v; }
@@ -2025,15 +2805,41 @@ function clearBenefPreview() { currentSelectedAssistBeneficiary = null; document
 async function saveAssistance() {
   if (!currentSelectedAssistBeneficiary) { showMsg('message', 'اختر المستفيد', 'error'); return; }
   const type = document.getElementById('assistType').value, date = document.getElementById('assistDate').value, amount = parseFloat(document.getElementById('assistAmount').value) || 0;
+  const fundCode = document.getElementById('assistFundCode').value;
   if (!type) { showMsg('message', 'اختر النوع', 'error'); return; }
   if (!date) { showMsg('message', 'أدخل التاريخ', 'error'); return; }
   if (amount <= 0) { showMsg('message', 'أدخل مبلغاً', 'error'); return; }
-  const payload = { action: 'saveAssistance', assistanceCategory: 'فردية', fileNumber: currentSelectedAssistBeneficiary.fileNumber, beneficiaryName: currentSelectedAssistBeneficiary.fullName, assistanceType: type, assistanceDate: date, amount: amount, notes: document.getElementById('assistNotes').value, financialNature: document.getElementById('assistFinancialNature').value, inKindType: document.getElementById('assistInKindType').value };
+  if (!fundCode) { showMsg('message', 'اختر الصندوق', 'error'); return; }
+
+  const payload = {
+    action: 'saveAssistance',
+    assistanceCategory: 'فردية',
+    fileNumber: currentSelectedAssistBeneficiary.fileNumber,
+    beneficiaryName: currentSelectedAssistBeneficiary.fullName,
+    assistanceType: type,
+    assistanceDate: date,
+    amount: amount,
+    notes: document.getElementById('assistNotes').value,
+    financialNature: document.getElementById('assistFinancialNature').value,
+    inKindType: document.getElementById('assistInKindType').value,
+    fundCode: fundCode
+  };
+
+  // 🆕 فحص الرصيد
+  const currentBal = getFundBalance(fundCode);
+  if (currentBal < amount) {
+    showLoanConfirmModal({ fundCode, amount, action: 'assist', assistPayload: payload });
+    return;
+  }
+
   showMsg('message', 'جاري الحفظ...', 'info');
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success'); resetAssistForm(); }
-    else showMsg('message', res.message || 'خطأ', 'error');
+    if (res.status === 'success') {
+      showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success');
+      resetAssistForm();
+      invalidateFundCache();
+    } else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
 
@@ -2053,11 +2859,11 @@ async function saveProject() {
   if (!name) { showMsg('message', 'أدخل اسم المشروع', 'error'); return; }
   if (!date) { showMsg('message', 'أدخل التاريخ', 'error'); return; }
   if (amount <= 0) { showMsg('message', 'أدخل مبلغاً', 'error'); return; }
-  const payload = { action: 'saveAssistance', assistanceCategory: 'مشروع', projectName: name, projectType: document.getElementById('projectType').value, assistanceDate: date, amount: amount, notes: document.getElementById('projectNotes').value };
+  const payload = { action: 'saveAssistance', assistanceCategory: 'مشروع', projectName: name, projectType: document.getElementById('projectType').value, assistanceDate: date, amount: amount, notes: document.getElementById('projectNotes').value, fundCode: 'GENERAL' };
   showMsg('message', 'جاري الحفظ...', 'info');
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', '✅ تم التسجيل', 'success'); resetProjectForm(); }
+    if (res.status === 'success') { showMsg('message', '✅ تم التسجيل', 'success'); resetProjectForm(); invalidateFundCache(); }
     else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
@@ -2088,7 +2894,7 @@ async function loadAssistHistory() {
       const isFin = rec.AssistanceType === 'مالية';
       html += `<div class="timeline-item">
         <div class="timeline-dot ${isFin ? 'fin' : 'inkind'}"><i class="fas fa-${isFin ? 'coins' : 'box-open'}"></i></div>
-        <div class="timeline-body"><strong>${esc(rec.BeneficiaryName || rec.FileNumber || '')}</strong><p>${esc(rec.AssistanceSubtype || rec.AssistanceType || '')} • ${esc(rec.AssistanceDate || '')} ${rec.Notes ? '• ' + esc(rec.Notes) : ''}</p></div>
+        <div class="timeline-body"><strong>${esc(rec.BeneficiaryName || rec.FileNumber || '')}</strong><p>${esc(rec.AssistanceSubtype || rec.AssistanceType || '')} • ${esc(rec.AssistanceDate || '')} ${rec.Notes ? '• ' + esc(rec.Notes) : ''} ${rec.FundName ? '• ['+esc(rec.FundName)+']' : ''}</p></div>
         <div class="timeline-amt">${parseFloat(rec.Amount || 0).toLocaleString('ar-EG')} ج</div>
       </div>`;
     });
@@ -2123,7 +2929,7 @@ async function loadBookletSummary() {
     const r = await apiFetch(`${API_URL}?action=getRevenueStats`); const stats = await r.json();
     const byBooklet = stats.byBooklet || {};
     const grid = document.getElementById('bookletSummaryGrid');
-    const order = ['دفتر الكفالات', 'دفتر الاشتراكات (مكتب التحفيظ)', 'دفتر التبرعات العامة', 'دفتر زكاة المال', 'دفتر المساعدات العامة', 'أخرى'];
+    const order = ['دفتر الكفالات', 'دفتر الاشتراكات (مكتب التحفيظ)', 'دفتر التبرعات العامة', 'دفتر زكاة المال', 'دفتر المساعدات العامة', 'اشتراكات الحضانة', 'أخرى'];
     let html = '';
     order.forEach(bk => {
       const amt = byBooklet[bk] || 0;
@@ -2135,17 +2941,42 @@ async function loadBookletSummary() {
 
 function setRevAmount(v) { document.getElementById('revAmount').value = v; }
 
+function updateRevFundPreview() {
+  const bookletType = document.getElementById('revBookletType').value;
+  const previewEl = document.getElementById('revFundPreview');
+  const textEl = document.getElementById('revFundPreviewText');
+  if (!previewEl || !textEl) return;
+  if (!bookletType) {
+    previewEl.dataset.fund = 'GENERAL';
+    textEl.textContent = 'اختر نوع الدفتر أولاً';
+    return;
+  }
+  let fundCode = 'GENERAL';
+  for (const key in BOOKLET_TO_FUND) { if (bookletType === key) { fundCode = BOOKLET_TO_FUND[key]; break; } }
+  if (bookletType.includes('كفال')) fundCode = 'KAFALA';
+  else if (bookletType.includes('زكاة')) fundCode = 'ZAKAT';
+  else if (bookletType.includes('تحفيظ')) fundCode = 'QURAN';
+  else if (bookletType.includes('حضانة')) fundCode = 'KINDER';
+  previewEl.dataset.fund = fundCode;
+  const bal = getFundBalance(fundCode);
+  textEl.textContent = `سيُضاف إلى: ${FUNDS_CONFIG[fundCode].icon} ${FUNDS_CONFIG[fundCode].name} (الرصيد الحالي: ${bal.toLocaleString('ar-EG')} ج)`;
+}
+
 async function saveRevenue() {
   const bookletType = document.getElementById('revBookletType').value, date = document.getElementById('revDate').value, amount = parseFloat(document.getElementById('revAmount').value) || 0;
   if (!bookletType) { showMsg('message', 'اختر الدفتر', 'error'); return; }
   if (!date) { showMsg('message', 'أدخل التاريخ', 'error'); return; }
   if (amount <= 0) { showMsg('message', 'أدخل مبلغاً', 'error'); return; }
-  const payload = { action: 'saveRevenue', bookletType: bookletType, revenueDate: date, amount: amount, notes: document.getElementById('revNotes').value };
+  const payload = { action: 'saveRevenue', bookletType, revenueDate: date, amount, notes: document.getElementById('revNotes').value };
   showMsg('message', 'جاري الحفظ...', 'info');
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success'); resetRevForm(); loadBookletSummary(); }
-    else showMsg('message', res.message || 'خطأ', 'error');
+    if (res.status === 'success') {
+      showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success');
+      resetRevForm();
+      loadBookletSummary();
+      invalidateFundCache();
+    } else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
 
@@ -2154,6 +2985,7 @@ function resetRevForm() {
   document.getElementById('revDate').value = new Date().toISOString().split('T')[0];
   document.getElementById('revAmount').value = '';
   document.getElementById('revNotes').value = '';
+  updateRevFundPreview();
 }
 
 async function loadRevenues() {
@@ -2175,7 +3007,7 @@ async function loadRevenues() {
     filtered.forEach(rec => {
       html += `<div class="timeline-item">
         <div class="timeline-dot rev"><i class="fas fa-coins"></i></div>
-        <div class="timeline-body"><strong>${esc(rec.BookletType)}</strong><p>${esc(rec.RevenueDate || '')} ${rec.Notes ? '• ' + esc(rec.Notes) : ''} • ${esc(rec.AddedBy || '')}</p></div>
+        <div class="timeline-body"><strong>${esc(rec.BookletType)}</strong><p>${esc(rec.RevenueDate || '')} ${rec.Notes ? '• ' + esc(rec.Notes) : ''} • ${esc(rec.AddedBy || '')} ${rec.FundName ? '• ['+esc(rec.FundName)+']' : ''}</p></div>
         <div class="timeline-amt rev">+ ${parseFloat(rec.Amount || 0).toLocaleString('ar-EG')} ج</div>
         <button class="btn btn-ghost btn-xs" onclick="deleteRevenueRecord('${esc(rec.RecordID)}')" style="color:var(--danger-600)"><i class="fas fa-trash"></i></button>
       </div>`;
@@ -2189,7 +3021,7 @@ async function deleteRevenueRecord(recordId) {
   if (!conf.isConfirmed) return;
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteRevenue', recordId: recordId }) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadRevenues(); loadBookletSummary(); }
+    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadRevenues(); loadBookletSummary(); invalidateFundCache(); }
     else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
@@ -2207,86 +3039,83 @@ async function loadExpenseSummary() {
     const r = await apiFetch(`${API_URL}?action=getExpenseStats`); const stats = await r.json();
     const byType = stats.byType || {};
     const grid = document.getElementById('expenseSummaryGrid');
-    const order = ['مرتبات مكتب التحفيظ', 'مرتبات الحضانة', 'كراتين رمضان', 'مساعدات شهرية', 'كفالات أيتام', 'أخرى'];
+    const order = ['مرتبات مكتب التحفيظ', 'مرتبات الحضانة', 'مرتبات إدارية', 'إيجار', 'كهرباء ومياه', 'مستلزمات', 'صيانة', 'كراتين رمضان', 'أخرى'];
     let html = '';
     order.forEach(tp => {
       const amt = byType[tp] || 0;
+      if (amt === 0 && !byType[tp]) return;
       html += `<div class="booklet-card exp"><div class="booklet-card-head"><div class="booklet-card-icon"><i class="fas fa-money-bill-transfer"></i></div></div><div class="booklet-card-title">${esc(tp)}</div><div class="booklet-card-amount exp">${amt.toLocaleString('ar-EG')}</div><div class="booklet-card-label">جنيه</div></div>`;
     });
-    grid.innerHTML = html;
+    grid.innerHTML = html || '<p style="text-align:center;color:var(--ink-500);padding:16px;grid-column:1/-1">لا توجد مصروفات بعد</p>';
   } catch (e) { console.warn(e); }
 }
 
-function toggleExpenseFields() {
-  const t = document.getElementById('expType').value;
-  const sec = document.getElementById('expBeneficiarySection');
-  if (t === 'مساعدات شهرية' || t === 'كفالات أيتام') sec.style.display = 'block';
-  else { sec.style.display = 'none'; clearExpenseBenef(); }
+function updateExpFundPreview() {
+  const fundCode = document.getElementById('expFundCode')?.value || 'GENERAL';
+  const previewEl = document.getElementById('expFundPreview');
+  const textEl = document.getElementById('expFundPreviewText');
+  if (!previewEl || !textEl) return;
+  previewEl.dataset.fund = fundCode;
+  const bal = getFundBalance(fundCode);
+  textEl.textContent = `الرصيد المتاح: ${bal.toLocaleString('ar-EG')} ج.م`;
+  previewEl.style.color = bal < 0 ? '#C62828' : '';
 }
 
 function setExpAmount(v) { document.getElementById('expAmount').value = v; }
-
-let expBenefTimer = null;
-function expenseBenefSearch(val) {
-  clearTimeout(expBenefTimer);
-  if (!val || val.trim().length < 1) { document.getElementById('expBenefResults').innerHTML = ''; return; }
-  expBenefTimer = setTimeout(async () => {
-    try {
-      let results;
-      if (beneficiariesLoaded && allBeneficiariesCache) {
-        const norm = (s) => s ? String(s).toLowerCase().replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').trim() : '';
-        const t = norm(val);
-        results = allBeneficiariesCache.filter(b => norm(b.fullName).includes(t) || norm(b.fileNumber).includes(t)).slice(0, 12);
-      } else {
-        const r = await apiFetch(`${API_URL}?action=search&term=${encodeURIComponent(val)}`);
-        results = await r.json();
-      }
-      if (!Array.isArray(results)) return;
-      const div = document.getElementById('expBenefResults');
-      if (!results.length) { div.innerHTML = '<p style="color:var(--ink-500);text-align:center;padding:8px;font-size:11px">لا نتائج</p>'; return; }
-      let html = '<div class="search-results-drop">';
-      results.slice(0, 12).forEach(r => {
-        html += `<div class="search-result-item" onclick="selectExpenseBenef('${esc(r.fileNumber)}')"><div><strong>${esc(r.fullName)}</strong> <span>${esc(r.fileNumber)}</span></div><div style="font-size:11px;color:var(--ink-500)">${esc(r.maritalStatus || '')}</div></div>`;
-      });
-      html += '</div>'; div.innerHTML = html;
-    } catch (e) {}
-  }, 180);
-}
-
-async function selectExpenseBenef(fn) {
-  try {
-    let b = null;
-    if (beneficiariesLoaded && allBeneficiariesCache) { b = allBeneficiariesCache.find(x => String(x.fileNumber) === String(fn)); }
-    if (!b) { b = await getBeneficiaryCached(fn); }
-    if (!b || !b.fileNumber) { showMsg('message', 'لم يتم العثور', 'error'); return; }
-    currentExpenseBeneficiary = b;
-    document.getElementById('expBenefResults').innerHTML = '';
-    document.getElementById('expBenefSearch').value = '';
-    document.getElementById('expBpAvatar').textContent = (b.fullName || '؟').charAt(0);
-    document.getElementById('expBpName').textContent = b.fullName || '—';
-    document.getElementById('expBpFile').textContent = b.fileNumber + ' • ' + (b.phone1 || '');
-    document.getElementById('expBenefPreview').classList.add('show');
-  } catch (e) { showMsg('message', 'خطأ', 'error'); }
-}
-
-function clearExpenseBenef() { currentExpenseBeneficiary = null; document.getElementById('expBenefPreview').classList.remove('show'); }
 
 async function saveExpense() {
   const expType = document.getElementById('expType').value;
   const date = document.getElementById('expDate').value;
   const amount = parseFloat(document.getElementById('expAmount').value) || 0;
   const notes = document.getElementById('expNotes').value.trim();
+  const fundCode = document.getElementById('expFundCode').value;
   if (!expType) { showMsg('message', 'اختر نوع المصروف', 'error'); return; }
   if (!date) { showMsg('message', 'أدخل التاريخ', 'error'); return; }
   if (amount <= 0) { showMsg('message', 'أدخل مبلغاً', 'error'); return; }
   if (!notes) { showMsg('message', 'أدخل البيان', 'error'); return; }
-  if ((expType === 'مساعدات شهرية' || expType === 'كفالات أيتام') && !currentExpenseBeneficiary) { showMsg('message', 'اختر المستفيد', 'error'); return; }
-  const payload = { action: 'saveExpense', expenseType: expType, expenseDate: date, amount: amount, notes: notes, expenseSubtype: document.getElementById('expSubtype').value.trim(), beneficiaryName: currentExpenseBeneficiary ? currentExpenseBeneficiary.fullName : '', beneficiaryFileNumber: currentExpenseBeneficiary ? currentExpenseBeneficiary.fileNumber : '' };
+  if (!fundCode) { showMsg('message', 'اختر الصندوق', 'error'); return; }
+
+  const payload = { action: 'saveExpense', expenseType: expType, expenseDate: date, amount, notes, expenseSubtype: document.getElementById('expSubtype').value.trim(), fundCode };
+
+  // 🆕 فحص الرصيد
+  const currentBal = getFundBalance(fundCode);
+  if (currentBal < amount) {
+    const fundName = FUNDS_CONFIG[fundCode].name;
+    const shortfall = amount - currentBal;
+    const conf = await Swal.fire({
+      title: 'رصيد الصندوق غير كافٍ',
+      html: `<div style="text-align:right;font-size:13px;line-height:1.8">
+        صندوق <strong>${fundName}</strong> رصيده <strong style="color:#2E7D32">${currentBal.toLocaleString('ar-EG')} ج</strong><br>
+        المبلغ المطلوب <strong style="color:#C62828">${amount.toLocaleString('ar-EG')} ج</strong><br>
+        <hr style="margin:8px 0;border:none;border-top:1px dashed #ddd">
+        هل تريد تسجيل <strong>${shortfall.toLocaleString('ar-EG')} ج</strong> كسلفة من <strong>التبرعات العامة</strong>؟
+      </div>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'موافق، سجّل السلفة',
+      cancelButtonText: 'إلغاء',
+      confirmButtonColor: '#C62828'
+    });
+    if (!conf.isConfirmed) return;
+
+    // سجّل السلفة أولاً
+    try {
+      const loanPayload = { action: 'saveLoan', fromFund: 'GENERAL', toFund: fundCode, amount: shortfall, loanDate: date, reason: `سلفة تلقائية لمصروف: ${expType}` };
+      const lr = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(loanPayload) });
+      const lres = await lr.json();
+      if (lres.status !== 'success') { showMsg('message', 'فشل السلفة: ' + lres.message, 'error'); return; }
+    } catch (e) { showMsg('message', 'خطأ في السلفة', 'error'); return; }
+  }
+
   showMsg('message', 'جاري الحفظ...', 'info');
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success'); resetExpenseForm(); loadExpenseSummary(); }
-    else showMsg('message', res.message || 'خطأ', 'error');
+    if (res.status === 'success') {
+      showMsg('message', `✅ تم التسجيل (${res.recordId || ''})`, 'success');
+      resetExpenseForm();
+      loadExpenseSummary();
+      invalidateFundCache();
+    } else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
 
@@ -2296,9 +3125,8 @@ function resetExpenseForm() {
   document.getElementById('expAmount').value = '';
   document.getElementById('expNotes').value = '';
   document.getElementById('expSubtype').value = '';
-  document.getElementById('expBenefSearch').value = '';
-  clearExpenseBenef();
-  toggleExpenseFields();
+  document.getElementById('expFundCode').value = 'GENERAL';
+  updateExpFundPreview();
 }
 
 async function loadExpenses() {
@@ -2322,7 +3150,7 @@ async function loadExpenses() {
         <div class="timeline-dot exp"><i class="fas fa-money-bill-transfer"></i></div>
         <div class="timeline-body">
           <strong>${esc(rec.ExpenseType)} ${rec.BeneficiaryName ? ' — ' + esc(rec.BeneficiaryName) : ''}</strong>
-          <p>${esc(rec.ExpenseDate || '')} ${rec.ExpenseSubtype ? '• ' + esc(rec.ExpenseSubtype) : ''} ${rec.Notes ? ' • 📋 ' + esc(rec.Notes) : ''} • ${esc(rec.AddedBy || '')}</p>
+          <p>${esc(rec.ExpenseDate || '')} ${rec.ExpenseSubtype ? '• ' + esc(rec.ExpenseSubtype) : ''} ${rec.Notes ? ' • 📋 ' + esc(rec.Notes) : ''} ${rec.FundName ? ' • ['+esc(rec.FundName)+']' : ''} • ${esc(rec.AddedBy || '')}</p>
         </div>
         <div class="timeline-amt exp">- ${parseFloat(rec.Amount || 0).toLocaleString('ar-EG')} ج</div>
         <button class="btn btn-ghost btn-xs" onclick="deleteExpenseRecord('${esc(rec.RecordID)}')" style="color:var(--danger-600)"><i class="fas fa-trash"></i></button>
@@ -2337,7 +3165,7 @@ async function deleteExpenseRecord(recordId) {
   if (!conf.isConfirmed) return;
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteExpense', recordId: recordId }) }); const res = await r.json();
-    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadExpenses(); loadExpenseSummary(); }
+    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadExpenses(); loadExpenseSummary(); invalidateFundCache(); }
     else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
@@ -2653,6 +3481,7 @@ async function saveMemberPayment() {
       showMsg('message', `✅ تم تسجيل السداد (${res.recordId || ''})`, 'success');
       resetPaymentForm();
       loadPaymentsHistory();
+      invalidateFundCache();
     } else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
@@ -2694,7 +3523,7 @@ async function deleteMemberPaymentRecord(recordId) {
   try {
     const r = await apiFetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteMemberPayment', recordId: recordId }) });
     const res = await r.json();
-    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadPaymentsHistory(); }
+    if (res.status === 'success') { showMsg('message', '✅ تم الحذف', 'success'); loadPaymentsHistory(); invalidateFundCache(); }
     else showMsg('message', res.message || 'خطأ', 'error');
   } catch { showMsg('message', 'خطأ', 'error'); }
 }
@@ -2870,17 +3699,10 @@ async function loadFinancialSummary() {
 /* ═══════ DASHBOARD ═══════ */
 async function loadDashboard() {
   try {
-    try {
-      const balance = await apiFetch(API_URL + "?action=getCurrentBalance").then(r => r.json());
-      if (!balance.error) {
-        document.getElementById('balanceValue').innerHTML = `${(balance.balance || 0).toLocaleString('ar-EG')} <small>ج.م</small>`;
-        document.getElementById('balanceLabel').textContent = balance.isPositive ? '✅ الرصيد موجب — يمكن الصرف بشكل طبيعي' : '⚠️ الرصيد سالب — يرجى مراجعة الميزانية';
-        document.getElementById('balanceHero').classList.toggle('negative', !balance.isPositive);
-        document.getElementById('bhRevenues').textContent = (balance.totalRevenues || 0).toLocaleString('ar-EG');
-        document.getElementById('bhAssistance').textContent = (balance.totalAssistance || 0).toLocaleString('ar-EG');
-        document.getElementById('bhExpenses').textContent = (balance.totalGeneralExpenses || 0).toLocaleString('ar-EG');
-      }
-    } catch (e) {}
+    // أرصدة الصناديق (الإجمالي)
+    await loadFundBalances();
+    loadDashboardFunds();
+
     const stats = await apiFetch(API_URL + "?action=getStatistics").then(r => r.json());
     document.getElementById('kpiTotal').textContent = stats.total || 0;
     document.getElementById('kpiActive').textContent = stats.active || 0;
@@ -3161,6 +3983,7 @@ async function generateSmartMonthlyReport() {
     const expStats = await apiFetch(API_URL + "?action=getExpenseStats").then(r => r.json());
     const bal = await apiFetch(API_URL + "?action=getCurrentBalance").then(r => r.json());
     const memStats = await apiFetch(API_URL + "?action=getMemberStats").then(r => r.json());
+    const fundData = fundBalancesCache || await apiFetch(API_URL + "?action=getFundBalances").then(r => r.json());
     const now = new Date();
     const monthName = now.toLocaleDateString('ar-EG', { month: 'long', year: 'numeric' });
     const total = all.length, active = all.filter(b => b.fileStatus === 'نشط').length;
@@ -3173,17 +3996,37 @@ async function generateSmartMonthlyReport() {
     const sixMonthsAgo = new Date(); sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
     const needsFollow = all.filter(b => { if (b.fileStatus !== 'نشط') return false; const d = b.lastAssistanceDate; if (!d) return true; const dd = new Date(d); return !isNaN(dd.getTime()) && dd < sixMonthsAgo; }).length;
 
+    let fundsHtml = '';
+    if (fundData && fundData.funds) {
+      const order = ['KAFALA','ZAKAT','QURAN','KINDER','MEMBERS','GENERAL'];
+      order.forEach(code => {
+        const f = fundData.funds[code];
+        if (!f) return;
+        fundsHtml += `<div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-vault"></i> ${f.icon} ${esc(f.name)}</div><div class="report-stat-value ${f.balance >= 0 ? 'teal' : 'danger'}">${(f.balance || 0).toLocaleString('ar-EG')} ج</div></div>`;
+      });
+    }
+
     const html = `
     <div class="balance-hero" style="margin-bottom:18px">
       <div class="balance-hero-head"><h3><i class="fas fa-file-invoice"></i> التقرير الذكي — ${monthName}</h3></div>
       <p style="opacity:.85;font-size:12.5px">ملخص شامل</p>
       <div class="balance-hero-stats">
         <div class="balance-hero-stat"><div class="balance-hero-stat-value">${total.toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">مستفيدين</div></div>
-        <div class="balance-hero-stat"><div class="balance-hero-stat-value">${(revStats.total || 0).toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">إيرادات</div></div>
+        <div class="balance-hero-stat"><div class="balance-hero-stat-value">${(fundData?.grandTotal?.revenues || revStats.total || 0).toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">إيرادات</div></div>
         <div class="balance-hero-stat"><div class="balance-hero-stat-value">${((assistStats.totalFinancial || 0) + (expStats.total || 0)).toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">مصروفات</div></div>
-        <div class="balance-hero-stat"><div class="balance-hero-stat-value">${(bal.balance || 0).toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">الرصيد</div></div>
+        <div class="balance-hero-stat"><div class="balance-hero-stat-value">${(fundData?.grandTotal?.balance || 0).toLocaleString('ar-EG')}</div><div class="balance-hero-stat-label">الرصيد</div></div>
       </div>
     </div>
+
+    <div class="report-section">
+      <div class="report-section-title"><i class="fas fa-vault"></i> أرصدة الصناديق</div>
+      ${fundsHtml}
+      <div class="report-stat-row" style="background:#F1F8E9;margin-top:8px;padding:10px;border-radius:8px">
+        <div class="report-stat-label"><i class="fas fa-coins"></i> <strong>الإجمالي العام</strong></div>
+        <div class="report-stat-value" style="font-size:17px">${(fundData?.grandTotal?.balance || 0).toLocaleString('ar-EG')} ج</div>
+      </div>
+    </div>
+
     <div class="report-section">
       <div class="report-section-title"><i class="fas fa-users"></i> نظرة عامة</div>
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-user-check"></i> نشطون</div><div class="report-stat-value">${active} (${total ? Math.round(active / total * 100) : 0}%)</div></div>
@@ -3191,6 +4034,7 @@ async function generateSmartMonthlyReport() {
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-user-tie"></i> أعضاء الجمعية</div><div class="report-stat-value purple">${memStats.total || 0}</div></div>
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-user-slash"></i> الأسر بلا عائل</div><div class="report-stat-value danger">${widows + abandoned + divorced}</div></div>
     </div>
+
     <div class="report-section">
       <div class="report-section-title"><i class="fas fa-exclamation-triangle"></i> حالات تحتاج اهتمام</div>
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-female"></i> أرامل</div><div class="report-stat-value">${widows}</div></div>
@@ -3200,13 +4044,7 @@ async function generateSmartMonthlyReport() {
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-heartbeat"></i> مرضى مزمنون</div><div class="report-stat-value warn">${chronic}</div></div>
       <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-ban"></i> بدون دخل</div><div class="report-stat-value danger">${noInc}</div></div>
     </div>
-    <div class="report-section">
-      <div class="report-section-title"><i class="fas fa-coins"></i> الموقف المالي</div>
-      <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-arrow-down"></i> الإيرادات</div><div class="report-stat-value teal">${(revStats.total || 0).toLocaleString('ar-EG')} ج</div></div>
-      <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-hands-helping"></i> المساعدات</div><div class="report-stat-value blue">${(assistStats.totalFinancial || 0).toLocaleString('ar-EG')} ج</div></div>
-      <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-money-bill-transfer"></i> مصروفات عامة</div><div class="report-stat-value warn">${(expStats.total || 0).toLocaleString('ar-EG')} ج</div></div>
-      <div class="report-stat-row"><div class="report-stat-label"><i class="fas fa-wallet"></i> الرصيد</div><div class="report-stat-value ${(bal.balance || 0) >= 0 ? '' : 'danger'}">${(bal.balance || 0).toLocaleString('ar-EG')} ج</div></div>
-    </div>
+
     <p style="text-align:center;font-size:11px;color:var(--ink-500);padding:14px">تم الإنشاء آلياً — ${now.toLocaleDateString('ar-EG')}</p>`;
     c.innerHTML = html;
     lastSmartReportHTML = html;
@@ -3291,21 +4129,28 @@ function initApp() {
   document.getElementById('expDate').value = new Date().toISOString().split('T')[0];
   document.getElementById('memMembershipDate').value = new Date().toISOString().split('T')[0];
   document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('loanDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('reconDate').value = new Date().toISOString().split('T')[0];
+
   initPaymentYearSelect();
   initStatusYearSelect();
   loadAllPrograms();
-  loadDashboard();
+  loadFundBalances(true).then(() => {
+    loadDashboard();
+    updateRevFundPreview();
+    updateExpFundPreview();
+    updateAssistFundPreview();
+    updateReconPreview();
+  });
   getAllBeneficiariesCached().then(() => console.log('✅ Preloaded'));
   setTimeout(() => checkFollowUpAlerts(false), 2500);
 }
 
-/* التشغيل التلقائي عند فتح الصفحة */
 document.addEventListener('DOMContentLoaded', () => {
   initApp();
-  console.log('✅ النظام جاهز — النسخة 6.0 (بدون تسجيل دخول)');
+  console.log('✅ النظام جاهز — النسخة 7.0 (نظام الصناديق)');
 });
 
-/* اختصارات لوحة المفاتيح */
 document.getElementById('searchInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchBeneficiary(); });
 </script>
 </body>
