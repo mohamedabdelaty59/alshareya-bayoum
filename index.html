@@ -4353,7 +4353,6 @@ async function printBeneficiaryForm() {
     }
   } catch (e) { qrDataUrl = ''; }
 
-  // ── عدد الأقسام ديناميكي ──
   let secNum = 0;
   const nextSec = () => ++secNum;
 
@@ -4417,10 +4416,10 @@ table.children td.mono{font-family:'Courier New',monospace;font-size:9px;directi
 .chips{display:flex;flex-wrap:wrap;gap:4px}
 .chip{padding:3px 10px;background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;border-radius:12px;font-size:10px;font-weight:700}
 
-/* Checkboxes */
-.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px}
-.chk{display:flex;align-items:center;gap:7px;font-size:10.5px;color:#333;padding:3px 0}
-.chk .box{width:13px;height:13px;border:1.5px solid #2E7D32;border-radius:3px;flex-shrink:0;background:#fff}
+/* Checkboxes - 3 أعمدة */
+.chk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 10px}
+.chk{display:flex;align-items:center;gap:6px;font-size:10px;color:#333;padding:2px 0}
+.chk .box{width:12px;height:12px;border:1.5px solid #2E7D32;border-radius:3px;flex-shrink:0;background:#fff}
 
 /* Declaration */
 .declaration{padding:8px 14px;background:#FFF9C4;border:1.5px dashed #F9A825;border-radius:6px;font-size:10.5px;line-height:1.8;color:#5D4037;margin-bottom:10px;font-weight:600;text-align:justify}
@@ -4581,12 +4580,19 @@ ${children.length ? `
       ${[
         'صورة بطاقة الرقم القومي',
         'شهادة ميلاد الأبناء',
-        'قسيمة الزواج / الطلاق',
+        'قيد مدرسي للأبناء',
+        'قسيمة الزواج / حكم الطلاق',
         'شهادة وفاة الزوج',
-        'تقرير طبي',
+        'إعلام وراثة / حصر إرث',
+        'تقرير طبي معتمد',
+        'تقرير إعاقة معتمد',
         'بطاقة تكافل وكرامة',
-        'إيصال مرافق (كهرباء/غاز/مياه)',
-        'أخرى : ________________________________'
+        'برنت تأمين اجتماعي',
+        'كشف حساب بنكي / محفظة إلكترونية',
+        'شهادة دخل من جهة العمل',
+        'مستند حيازة زراعية',
+        'إيصال مرافق / إيجار موثق',
+        'أخرى : ______________________'
       ].map(x => `<div class="chk"><div class="box"></div><span>${x}</span></div>`).join('')}
     </div>
   </div>
