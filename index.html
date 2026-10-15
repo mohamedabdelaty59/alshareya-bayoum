@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -341,7 +342,6 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .status-pill.loan-active{background:#FFF3E0;color:#E65100}
 .status-pill.loan-paid{background:var(--brand-100);color:var(--brand-800)}
 
-/* 🆕 تقرير دوري - بطاقات اختيار */
 .period-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
 .period-card{padding:20px;border-radius:var(--r-lg);background:#fff;border:2px solid var(--ink-100);cursor:pointer;text-align:center;transition:var(--transition)}
 .period-card:hover{border-color:#E91E63;transform:translateY(-3px);box-shadow:0 8px 20px rgba(233,30,99,.15)}
@@ -388,7 +388,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 <div id="mainApp">
 <div class="app-shell">
 
-<aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar">
     <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-chevron-right" id="sidebarToggleIcon"></i></button>
     <div class="sidebar-head">
       <div class="sidebar-logo"><img src="https://lh3.googleusercontent.com/d/1ob5NjyjX2ji0OpwUuBznmxRblYWxX4Vl" alt="GS" onerror="this.style.display='none';this.parentElement.textContent='GS'"></div>
@@ -1155,12 +1155,10 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           </div>
         </div>
 
-        <!-- 🆕 نموذج تسجيل عضو مع الترتيب الجديد -->
         <div id="mem-pane-new" style="display:none">
           <div class="card">
             <div class="card-head"><div class="card-icon purple"><i class="fas fa-user-plus"></i></div><h3>تسجيل عضو جديد</h3><div class="badge" id="memFormBadge">عضو جديد</div></div>
 
-            <!-- 1) نوع العضوية -->
             <div class="form-grid g2">
               <div class="form-group">
                 <label class="form-label"><i class="fas fa-user-tag"></i> نوع العضوية <span class="req">*</span></label>
@@ -1177,26 +1175,22 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
               </div>
             </div>
 
-            <!-- 2) الاسم -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-user"></i> اسم العضو <span class="req">*</span></label>
               <input class="form-input" id="memFullName" placeholder="الاسم رباعي">
             </div>
 
-            <!-- 3) الرقم القومي -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-id-card"></i> الرقم القومي <span class="req">*</span></label>
               <input class="form-input" id="memNationalId" maxlength="14" oninput="onMemberNIDInput(this.value)" placeholder="14 رقم">
               <div class="nid-indicator" id="memNidIndicator"></div>
             </div>
 
-            <!-- 4) رقم الهاتف -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-phone"></i> رقم الهاتف</label>
               <input class="form-input" id="memPhone" maxlength="11" placeholder="11 رقم">
             </div>
 
-            <!-- 🆕 5) حقول مجلس الإدارة (تظهر فقط لمجلس الإدارة) -->
             <div id="memPositionSection" style="display:none;padding:14px;background:#F3E5F5;border-radius:var(--r-md);border:1px solid #CE93D8;margin-top:10px">
               <div style="font-size:12.5px;font-weight:800;color:#6A1B9A;margin-bottom:10px"><i class="fas fa-crown"></i> بيانات مجلس الإدارة</div>
               <div class="form-grid g2">
@@ -1218,7 +1212,6 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
               </div>
             </div>
 
-            <!-- 6) باقي الحقول -->
             <div class="form-grid g2" style="margin-top:10px">
               <div class="form-group"><label class="form-label">تاريخ الانضمام</label><input type="date" class="form-input" id="memMembershipDate"></div>
               <div class="form-group">
@@ -1326,7 +1319,6 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
           </div>
         </div>
 
-        <!-- 🆕 كشوف الطباعة -->
         <div id="mem-pane-lists" style="display:none">
           <div class="card">
             <div class="card-head"><div class="card-icon purple"><i class="fas fa-list-ol"></i></div><h3>كشوف الأعضاء للطباعة</h3></div>
@@ -2493,7 +2485,6 @@ function onMemberNIDInput(val) {
     document.getElementById('memAgeCategoryDisplay').value = '';
     return;
   }
-  // حساب الفئة العمرية
   const century = val[0] === '2' ? 1900 : (val[0] === '3' ? 2000 : null);
   if (!century) { ind.innerHTML = `سنة غير صالحة`; ind.className = 'nid-indicator invalid'; return; }
   const yy = parseInt(val.substring(1, 3)), mm = parseInt(val.substring(3, 5)), dd = parseInt(val.substring(5, 7));
@@ -2541,7 +2532,7 @@ const egyptGovernorates = {
   "القاهرة":{centers:[{name:"مدينة نصر",isDefault:true},"حلوان","المعادي","شبرا","عين شمس","المرج"],villages:{}},
   "الجيزة":{centers:[{name:"الجيزة",isDefault:true},"إمبابة","الدقي","أوسيم","البدرشين"],villages:{}},
   "الإسكندرية":{centers:[{name:"المنتزه",isDefault:true},"سيدي جابر","العجمي","برج العرب"],villages:{}},
-  "القليوبية":{centers:[{name:"بنها",isDefault:true},"شبرا الخيمة","القناطر الخيرية","قليوب","طوخ"],villages:{}}
+  "القليوبية":{centers:[{name:"بنها",isDefault:true},"شبرا الخيمة","القناطر الخيرية","قليوب","طوخ"],villages:{}}  
 };
 
 function updateCenters() {
@@ -4280,19 +4271,359 @@ function printBeneficiaryCard() {
   w.document.close();
 }
 
-function printBeneficiaryForm() {
-  if (!document.getElementById('fullName').value) { showMsg('message', 'لا توجد بيانات', 'error'); return; }
-  const today = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  const w = window.open('', '_blank');
-  const ms = document.getElementById('maritalStatus').value;
-  const progs = [...document.querySelectorAll('#basicPrograms .active')].map(e => e.textContent.trim()).join('، ') || 'لا يوجد';
+/* ═══════════════════════════════════════════════════════════════════
+   🆕 v2.0 — النسخة المُحسّنة من طباعة استمارة المستفيد
+   ═══════════════════════════════════════════════════════════════════ */
+async function printBeneficiaryForm() {
+  const fullName = document.getElementById('fullName').value.trim();
+  if (!fullName) { showMsg('message', 'لا توجد بيانات للطباعة', 'error'); return; }
+
+  // ── جمع كل البيانات ──
+  const fn = document.getElementById('fileNumber').value || '—';
+  const nid = document.getElementById('nationalId').value || '';
+  const gender = document.getElementById('gender').value || '';
+  const bd = document.getElementById('birthDate').value || '';
+  const age = document.getElementById('age').value || '';
+  const marital = document.getElementById('maritalStatus').value || '';
+  const phone1 = document.getElementById('phone1').value || '';
+  const phone2 = document.getElementById('phone2').value || '';
+  const spouseName = document.getElementById('spouseName').value || '';
+  const spouseNid = document.getElementById('spouseNationalId').value || '';
+  const deathDate = document.getElementById('deathDate').value || '';
+  const divorceDate = document.getElementById('divorceDate').value || '';
+  const abandonDate = document.getElementById('abandonDate')?.value || '';
+  const lastContact = document.getElementById('lastContactDate')?.value || '';
+  const policeReport = document.getElementById('policeReport')?.value || '';
+  const policeReportNum = document.getElementById('policeReportNumber')?.value || '';
+  const gov = document.getElementById('governorateSelect').value || '';
+  const center = document.getElementById('centerSelect').value || '';
+  const village = getVillageValue() || '';
+  const address = document.getElementById('address').value || '';
+  const incomeSource = document.getElementById('incomeSource').value || '';
+  const healthStatus = document.getElementById('healthStatus').value || '';
+  const specialNeeds = document.getElementById('specialNeeds').value || '';
+  const takaful = document.getElementById('takafulWakarama').value || '';
+  const insurance = document.getElementById('healthInsurance').value || '';
+  const insuranceNum = document.getElementById('insuranceNumber').value || '';
+  const agricultural = document.getElementById('agriculturalHolding').value || '';
+  const notes = document.getElementById('notes').value || '';
+  const fileStatus = currentBeneficiaryStatus || 'نشط';
+  const programs = [...document.querySelectorAll('#basicPrograms .active')].map(e => e.textContent.trim());
+
   const children = [];
   document.querySelectorAll('.child-row[data-idx]').forEach(row => {
     const n = row.querySelector('.child-name')?.value;
-    if (n) children.push({ n, g: row.querySelector('.child-gender')?.value, bd: row.querySelector('.child-birthDate')?.value, nid: row.querySelector('.child-nationalId')?.value, h: row.querySelector('.child-health')?.value, e: row.querySelector('.child-education')?.value, s: row.querySelector('.child-status')?.value, age: document.getElementById(`childAge${row.dataset.idx}`)?.textContent || '' });
+    if (n) {
+      children.push({
+        name: n,
+        gender: row.querySelector('.child-gender')?.value || '',
+        nid: row.querySelector('.child-nationalId')?.value || '',
+        birthDate: row.querySelector('.child-birthDate')?.value || '',
+        age: document.getElementById(`childAge${row.dataset.idx}`)?.textContent || '',
+        education: row.querySelector('.child-education')?.value || '',
+        health: row.querySelector('.child-health')?.value || '',
+        status: row.querySelector('.child-status')?.value || ''
+      });
+    }
   });
-  const childTable = children.length ? `<h3 style="color:#2E7D32;margin:14px 0 8px;border-bottom:2px solid #2E7D32;padding-bottom:5px;font-size:14px">الأبناء (${children.length})</h3><table style="width:100%;border-collapse:collapse;font-size:10.5px"><thead><tr>${['الاسم', 'الصفة', 'الرقم القومي', 'الميلاد', 'السن', 'التعليم', 'الصحة', 'الحالة'].map(h => `<th style="background:#2E7D32;color:#fff;padding:5px;border:1px solid #ddd">${h}</th>`).join('')}</tr></thead><tbody>${children.map(c => `<tr>${[c.n, c.g, c.nid, c.bd, c.age, c.e, c.h, c.s].map(v => `<td style="padding:4px;border:1px solid #ddd;text-align:center">${esc(v || '')}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '';
-  w.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>نموذج</title><style>body{font-family:Cairo;direction:rtl;padding:10mm;color:#000}.hdr{text-align:center;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #2E7D32}.hdr h1{color:#2E7D32;font-size:20px}.hdr h2{color:#2E7D32;font-size:15px;margin-top:4px}.card{margin-bottom:12px;padding:12px;border:1px solid #ddd;border-radius:8px;background:#f9f9fa}.card h3{color:#2E7D32;border-bottom:1px solid #2E7D32;padding-bottom:5px;margin-bottom:10px;font-size:14px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}.l{font-weight:700;font-size:11px;color:#444;margin-bottom:3px}.v{padding:5px 7px;background:#fff;border:1px solid #ccc;border-radius:4px;min-height:24px;font-size:12px}.sigs{margin-top:20px;padding-top:12px;border-top:2px solid #2E7D32;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center}.sig h4{color:#2E7D32;font-size:11px;margin-bottom:6px}.line{height:1px;background:#000;margin:22px 0 5px}</style></head><body><div class="hdr"><h1>الجمعية الشرعية - فرع البيوم</h1><h2>نموذج بيانات مستفيد</h2><p style="color:#666;font-size:12px;margin-top:4px">رقم الملف: ${esc(document.getElementById('fileNumber').value || '—')} | ${today}</p></div><div class="card"><h3>المعلومات الأساسية</h3><div class="g3"><div><div class="l">الاسم:</div><div class="v">${esc(document.getElementById('fullName').value)}</div></div><div><div class="l">الرقم القومي:</div><div class="v">${esc(document.getElementById('nationalId').value)}</div></div><div><div class="l">الجنس:</div><div class="v">${esc(document.getElementById('gender').value)}</div></div></div><div class="g3"><div><div class="l">الميلاد:</div><div class="v">${esc(document.getElementById('birthDate').value)}</div></div><div><div class="l">العمر:</div><div class="v">${esc(document.getElementById('age').value)}</div></div><div><div class="l">الحالة:</div><div class="v">${esc(ms)}</div></div></div><div class="g3"><div><div class="l">هاتف 1:</div><div class="v">${esc(document.getElementById('phone1').value)}</div></div><div><div class="l">هاتف 2:</div><div class="v">${esc(document.getElementById('phone2').value || '—')}</div></div><div><div class="l">العنوان:</div><div class="v">${esc(document.getElementById('address').value)}</div></div></div></div><div class="card"><h3>البرامج والخدمات</h3><div class="v" style="padding:8px">${esc(progs)}</div></div>${ms !== 'أعزب' ? childTable : ''}<div class="sigs">${['الباحث', 'عضو مجلس', 'أمين الصندوق', 'السكرتير', 'مدير الجمعية'].map(s => `<div class="sig"><h4>${s}</h4><div class="line"></div></div>`).join('')}</div><script>window.onload=function(){window.print();setTimeout(()=>window.close(),500)}<\/script></body></html>`);
+
+  // ── التواريخ ──
+  const now = new Date();
+  const gregDate = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  let hijriDate = '';
+  try {
+    hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+  } catch (e) { hijriDate = ''; }
+
+  // ── رقم الاستمارة التسلسلي ──
+  const year = now.getFullYear();
+  const seq = fn && fn !== '—' ? fn.replace(/\D/g, '').padStart(4, '0') : String(Date.now()).slice(-4);
+  const formNumber = `EST-${year}-${seq}`;
+
+  // ── توليد QR ──
+  const LOGO_URL = 'https://lh3.googleusercontent.com/d/1ob5NjyjX2ji0OpwUuBznmxRblYWxX4Vl';
+  let qrDataUrl = '';
+  try {
+    const qrText = `الجمعية الشرعية - فرع البيوم\nرقم الملف: ${fn}\nالاسم: ${fullName}\nالرقم القومي: ${nid}\nالهاتف: ${phone1}`;
+    if (typeof QRCode !== 'undefined') {
+      qrDataUrl = await QRCode.toDataURL(qrText, { width: 200, margin: 1, errorCorrectionLevel: 'M' });
+    }
+  } catch (e) { qrDataUrl = ''; }
+
+  // ── عدد الأقسام ديناميكي ──
+  let secNum = 0;
+  const nextSec = () => ++secNum;
+
+  const w = window.open('', '_blank');
+  if (!w) { showMsg('message', 'الرجاء السماح بالنوافذ المنبثقة', 'error'); return; }
+
+  w.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<title>نموذج مستفيد - ${esc(fullName)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:10mm}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo',sans-serif;direction:rtl;background:#fff;color:#000;font-size:11px;padding:5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+/* Header */
+.hdr{display:flex;align-items:center;gap:12px;border-bottom:3px solid #2E7D32;padding-bottom:8px;margin-bottom:10px}
+.hdr-logo{width:62px;height:62px;object-fit:contain}
+.hdr-center{flex:1;text-align:center}
+.hdr h1{color:#2E7D32;font-size:18px;font-weight:900;margin:0 0 2px}
+.hdr h2{color:#2E7D32;font-size:13.5px;font-weight:700;margin:0}
+.hdr p{font-size:9.5px;color:#777;margin:2px 0 0;letter-spacing:1px}
+.hdr-qr{width:72px;height:72px;border:1px solid #C8E6C9;border-radius:6px;padding:2px;background:#fff}
+
+/* Meta bar */
+.meta-bar{display:flex;justify-content:space-between;align-items:center;background:#E8F5E9;border:1px solid #C8E6C9;border-radius:6px;padding:5px 12px;margin-bottom:9px;font-size:10px;gap:10px}
+.meta-bar .item{display:flex;align-items:center;gap:4px;color:#1B5E20}
+.meta-bar strong{color:#1B5E20;font-weight:800}
+.meta-bar .form-num{background:#2E7D32;color:#fff;padding:3px 14px;border-radius:20px;font-weight:900;letter-spacing:.5px;font-size:10.5px;white-space:nowrap}
+
+/* Sections */
+.section{margin-bottom:7px;border:1px solid #cfd8dc;border-radius:6px;overflow:hidden;page-break-inside:avoid}
+.section-title{background:linear-gradient(90deg,#E8F5E9,#F1F8E9);color:#1B5E20;padding:5px 12px;font-size:11.5px;font-weight:800;border-bottom:1px solid #C8E6C9;display:flex;align-items:center;gap:8px}
+.section-title .num{background:#2E7D32;color:#fff;width:19px;height:19px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900;flex-shrink:0}
+.section-title .count{background:#fff;color:#2E7D32;border:1px solid #A5D6A7;padding:1px 8px;border-radius:10px;font-size:9.5px;font-weight:800;margin-right:auto}
+.section-body{padding:8px 12px}
+
+/* Fields */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px 12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px 12px}
+.field{display:flex;flex-direction:column;gap:1px;min-width:0}
+.field .lbl{font-size:9.5px;color:#546e7a;font-weight:700;padding-right:2px}
+.field .val{padding:4px 8px;background:#f8fafb;border:1px solid #dde3e8;border-radius:4px;font-size:11px;font-weight:700;color:#1a1a1a;min-height:22px;display:flex;align-items:center;line-height:1.3;word-break:break-word}
+.field .val.mono{font-family:'Courier New',monospace;direction:ltr;justify-content:flex-end;letter-spacing:.5px}
+.field .val .status-pill{display:inline-block;padding:1px 10px;border-radius:12px;font-size:9.5px;font-weight:800}
+.field .val .status-pill.active{background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7}
+.field .val .status-pill.inactive{background:#FFEBEE;color:#C62828;border:1px solid #FFCDD2}
+.field.full{grid-column:1/-1}
+.row{margin-bottom:5px}
+.row:last-child{margin-bottom:0}
+
+/* Children table */
+table.children{width:100%;border-collapse:collapse;font-size:9.5px}
+table.children th{background:#2E7D32;color:#fff;padding:5px 3px;font-weight:800;border:1px solid #1B5E20;font-size:9.5px}
+table.children td{padding:4px 3px;border:1px solid #cfd8dc;text-align:center;color:#1a1a1a}
+table.children tr:nth-child(even) td{background:#fafbfc}
+table.children td.name{text-align:right;font-weight:700;padding-right:6px}
+table.children td.mono{font-family:'Courier New',monospace;font-size:9px;direction:ltr}
+
+/* Programs chips */
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{padding:3px 10px;background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;border-radius:12px;font-size:10px;font-weight:700}
+
+/* Checkboxes */
+.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px}
+.chk{display:flex;align-items:center;gap:7px;font-size:10.5px;color:#333;padding:3px 0}
+.chk .box{width:13px;height:13px;border:1.5px solid #2E7D32;border-radius:3px;flex-shrink:0;background:#fff}
+
+/* Declaration */
+.declaration{padding:8px 14px;background:#FFF9C4;border:1.5px dashed #F9A825;border-radius:6px;font-size:10.5px;line-height:1.8;color:#5D4037;margin-bottom:10px;font-weight:600;text-align:justify}
+
+/* Signatures */
+.sigs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:6px 0}
+.sig{text-align:center}
+.sig h4{color:#2E7D32;font-size:10px;font-weight:800;margin:0 0 3px}
+.sig .line{height:1px;background:#000;margin-top:30px}
+.sig .line-label{font-size:8.5px;color:#777;margin-top:3px;font-weight:600}
+
+/* Footer */
+.footer{text-align:center;font-size:9px;color:#999;padding-top:6px;border-top:1px solid #eee;margin-top:8px;font-weight:600}
+
+@media print{
+  body{padding:0}
+  .section{break-inside:avoid}
+  .sigs{break-inside:avoid}
+}
+</style></head><body>
+
+<!-- ═══ Header ═══ -->
+<div class="hdr">
+  <img src="${LOGO_URL}" class="hdr-logo" alt="GS" onerror="this.style.display='none'">
+  <div class="hdr-center">
+    <h1>الجمعية الشرعية - فرع البيوم</h1>
+    <h2>نموذج بيانات مستفيد</h2>
+    <p>BENEFICIARY REGISTRATION FORM</p>
+  </div>
+  ${qrDataUrl ? `<img src="${qrDataUrl}" class="hdr-qr" alt="QR">` : '<div class="hdr-qr" style="opacity:0"></div>'}
+</div>
+
+<!-- ═══ Meta bar ═══ -->
+<div class="meta-bar">
+  <div class="item">📅 <strong>${gregDate}</strong></div>
+  ${hijriDate ? `<div class="item">🌙 ${hijriDate}</div>` : ''}
+  <div class="form-num">${formNumber}</div>
+</div>
+
+<!-- ═══ ① البيانات الأساسية ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> البيانات الأساسية</div>
+  <div class="section-body">
+    <div class="row grid-3">
+      <div class="field"><div class="lbl">الاسم الكامل</div><div class="val">${esc(fullName)}</div></div>
+      <div class="field"><div class="lbl">الرقم القومي</div><div class="val mono">${esc(nid) || '—'}</div></div>
+      <div class="field"><div class="lbl">الجنس</div><div class="val">${esc(gender) || '—'}</div></div>
+    </div>
+    <div class="row grid-3">
+      <div class="field"><div class="lbl">تاريخ الميلاد</div><div class="val">${esc(bd) || '—'}</div></div>
+      <div class="field"><div class="lbl">العمر</div><div class="val">${esc(age) || '—'}</div></div>
+      <div class="field"><div class="lbl">الحالة الاجتماعية</div><div class="val">${esc(marital) || '—'}</div></div>
+    </div>
+    <div class="row grid-3">
+      <div class="field"><div class="lbl">هاتف 1</div><div class="val mono">${esc(phone1) || '—'}</div></div>
+      <div class="field"><div class="lbl">هاتف 2</div><div class="val mono">${esc(phone2) || '—'}</div></div>
+      <div class="field"><div class="lbl">حالة الملف</div><div class="val"><span class="status-pill ${fileStatus === 'نشط' ? 'active' : 'inactive'}">${esc(fileStatus)}</span></div></div>
+    </div>
+    ${(spouseName || spouseNid || deathDate || divorceDate || abandonDate) ? `
+    <div class="row grid-3">
+      ${spouseName ? `<div class="field"><div class="lbl">اسم الزوج/الزوجة</div><div class="val">${esc(spouseName)}</div></div>` : ''}
+      ${spouseNid ? `<div class="field"><div class="lbl">الرقم القومي للزوج/ة</div><div class="val mono">${esc(spouseNid)}</div></div>` : ''}
+      ${deathDate ? `<div class="field"><div class="lbl">تاريخ الوفاة</div><div class="val">${esc(deathDate)}</div></div>` : ''}
+      ${divorceDate ? `<div class="field"><div class="lbl">تاريخ الطلاق</div><div class="val">${esc(divorceDate)}</div></div>` : ''}
+      ${abandonDate ? `<div class="field"><div class="lbl">تاريخ الهجر</div><div class="val">${esc(abandonDate)}</div></div>` : ''}
+      ${lastContact ? `<div class="field"><div class="lbl">آخر تواصل</div><div class="val">${esc(lastContact)}</div></div>` : ''}
+    </div>` : ''}
+    ${policeReport ? `
+    <div class="row grid-2">
+      <div class="field"><div class="lbl">تم تحرير محضر</div><div class="val">${esc(policeReport)}</div></div>
+      <div class="field"><div class="lbl">رقم / سنة المحضر</div><div class="val">${esc(policeReportNum) || '—'}</div></div>
+    </div>` : ''}
+  </div>
+</div>
+
+<!-- ═══ ② العنوان ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> العنوان</div>
+  <div class="section-body">
+    <div class="row grid-4">
+      <div class="field"><div class="lbl">المحافظة</div><div class="val">${esc(gov) || '—'}</div></div>
+      <div class="field"><div class="lbl">المركز</div><div class="val">${esc(center) || '—'}</div></div>
+      <div class="field"><div class="lbl">القرية</div><div class="val">${esc(village) || '—'}</div></div>
+      <div class="field"><div class="lbl">العنوان التفصيلي</div><div class="val">${esc(address) || '—'}</div></div>
+    </div>
+  </div>
+</div>
+
+${children.length ? `
+<!-- ═══ ③ بيانات الأبناء ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> بيانات الأبناء <span class="count">${children.length} أبناء</span></div>
+  <div class="section-body" style="padding:0">
+    <table class="children">
+      <thead><tr>
+        <th style="width:28px">#</th>
+        <th>الاسم</th>
+        <th style="width:52px">الصفة</th>
+        <th style="width:105px">الرقم القومي</th>
+        <th style="width:78px">الميلاد</th>
+        <th style="width:46px">السن</th>
+        <th style="width:62px">التعليم</th>
+        <th style="width:70px">الصحة</th>
+        <th style="width:58px">الحالة</th>
+      </tr></thead>
+      <tbody>
+        ${children.map((c, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td class="name">${esc(c.name)}</td>
+            <td>${esc(c.gender) || '—'}</td>
+            <td class="mono">${esc(c.nid) || '—'}</td>
+            <td>${esc(c.birthDate) || '—'}</td>
+            <td>${esc(c.age) || '—'}</td>
+            <td>${esc(c.education) || '—'}</td>
+            <td>${esc(c.health) || '—'}</td>
+            <td>${esc(c.status) || '—'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  </div>
+</div>` : ''}
+
+<!-- ═══ الوضع الاقتصادي والصحي ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> الوضع الاقتصادي والصحي</div>
+  <div class="section-body">
+    <div class="row grid-4">
+      <div class="field"><div class="lbl">مصدر الدخل</div><div class="val">${esc(incomeSource) || '—'}</div></div>
+      <div class="field"><div class="lbl">الحالة الصحية</div><div class="val">${esc(healthStatus) || '—'}</div></div>
+      <div class="field"><div class="lbl">نوع الإعاقة</div><div class="val">${esc(specialNeeds) || '—'}</div></div>
+      <div class="field"><div class="lbl">حيازة زراعية</div><div class="val">${esc(agricultural) || '—'}</div></div>
+    </div>
+    <div class="row grid-4">
+      <div class="field"><div class="lbl">تكافل وكرامة</div><div class="val">${esc(takaful) || '—'}</div></div>
+      <div class="field"><div class="lbl">التأمين الصحي</div><div class="val">${esc(insurance) || '—'}</div></div>
+      <div class="field" style="grid-column:span 2"><div class="lbl">رقم التأمين الصحي</div><div class="val mono">${esc(insuranceNum) || '—'}</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ البرامج والخدمات ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> البرامج والخدمات المستفيد منها</div>
+  <div class="section-body">
+    ${programs.length
+      ? `<div class="chips">${programs.map(p => `<span class="chip">${esc(p)}</span>`).join('')}</div>`
+      : '<div style="color:#999;font-size:10.5px;font-weight:600">لا يوجد برامج مسجلة حتى الآن</div>'}
+  </div>
+</div>
+
+<!-- ═══ المستندات المرفقة ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> المستندات المرفقة</div>
+  <div class="section-body">
+    <div class="chk-grid">
+      ${[
+        'صورة بطاقة الرقم القومي',
+        'شهادة ميلاد الأبناء',
+        'قسيمة الزواج / الطلاق',
+        'شهادة وفاة الزوج',
+        'تقرير طبي',
+        'بطاقة تكافل وكرامة',
+        'إيصال مرافق (كهرباء/غاز/مياه)',
+        'أخرى : ________________________________'
+      ].map(x => `<div class="chk"><div class="box"></div><span>${x}</span></div>`).join('')}
+    </div>
+  </div>
+</div>
+
+${notes ? `
+<!-- ═══ ملاحظات ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">📝</span> ملاحظات</div>
+  <div class="section-body">
+    <div style="font-size:11px;line-height:1.8;min-height:38px;color:#333;font-weight:600;white-space:pre-wrap">${esc(notes)}</div>
+  </div>
+</div>` : ''}
+
+<!-- ═══ الإقرار والتوقيعات ═══ -->
+<div class="section">
+  <div class="section-title"><span class="num">${nextSec()}</span> الإقرار والتوقيعات</div>
+  <div class="section-body">
+    <div class="declaration">
+      أقر أنا الموقّع أدناه بأن جميع البيانات المذكورة في هذه الاستمارة صحيحة وواقعية، وأتحمل المسؤولية الكاملة في حال ثبوت خلاف ذلك، كما أوافق على قيام الباحثين الميدانيين للجمعية بالتحقق من صحة هذه البيانات عبر الزيارات المنزلية.
+    </div>
+    <div class="sigs">
+      <div class="sig"><h4>توقيع المستفيد</h4><div class="line"></div><div class="line-label">الاسم / التاريخ</div></div>
+      <div class="sig"><h4>الباحث الميداني</h4><div class="line"></div><div class="line-label">الاسم / التاريخ</div></div>
+      <div class="sig"><h4>مراجع البيانات</h4><div class="line"></div><div class="line-label">الاسم / التاريخ</div></div>
+      <div class="sig"><h4>مدير الجمعية</h4><div class="line"></div><div class="line-label">الاسم / الختم</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  تم إنشاء هذا النموذج آلياً من نظام الجمعية الشرعية — فرع البيوم &nbsp;•&nbsp; ${formNumber} &nbsp;•&nbsp; ${gregDate}
+</div>
+
+<script>
+  window.onload = function () {
+    setTimeout(function () { window.print(); }, 400);
+  };
+<\/script>
+</body></html>`);
   w.document.close();
 }
 
@@ -4325,7 +4656,7 @@ function initApp() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initApp();
-  console.log('✅ النظام جاهز — v8.0');
+  console.log('✅ النظام جاهز — v8.0 + استمارة v2.0');
 });
 
 document.getElementById('searchInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchBeneficiary(); });
