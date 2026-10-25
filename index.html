@@ -373,6 +373,48 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 @keyframes loaderBar{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .loader-credit{position:absolute;bottom:24px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px}
 
+/* ═══════ 🔐 LOGIN SCREEN ═══════ */
+.login-screen{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,#0B3D1E 0%,#155724 45%,#0D47A1 100%);padding:20px;direction:rtl;font-family:'Cairo',sans-serif;overflow:hidden}
+.login-screen.show{display:flex}
+.login-screen::before{content:'';position:absolute;top:-50%;right:-20%;width:800px;height:800px;background:radial-gradient(circle,rgba(102,187,106,.18),transparent 70%);border-radius:50%;pointer-events:none}
+.login-screen::after{content:'';position:absolute;bottom:-40%;left:-15%;width:700px;height:700px;background:radial-gradient(circle,rgba(66,165,245,.18),transparent 70%);border-radius:50%;pointer-events:none}
+.login-card{position:relative;width:100%;max-width:430px;background:rgba(255,255,255,.98);border-radius:24px;padding:34px 32px 26px;box-shadow:0 32px 80px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.1);animation:loginSlideUp .5s cubic-bezier(.4,0,.2,1);z-index:1}
+@keyframes loginSlideUp{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.login-logo-wrap{width:96px;height:96px;position:relative;margin:0 auto 18px}
+.login-logo-ring{position:absolute;inset:-4px;border:2px solid transparent;border-top-color:#2E7D32;border-right-color:#F9A825;border-radius:50%;animation:loginSpin 2s linear infinite}
+@keyframes loginSpin{to{transform:rotate(360deg)}}
+.login-logo{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);border-radius:50%;object-fit:contain;background:#fff;padding:6px;box-shadow:0 8px 24px rgba(46,125,50,.25)}
+.login-title{text-align:center;font-size:18px;font-weight:900;color:#0B3D1E;margin-bottom:4px}
+.login-title span{color:#F9A825}
+.login-subtitle{text-align:center;font-size:12px;color:#64748B;font-weight:600;margin-bottom:24px}
+.login-form{display:flex;flex-direction:column;gap:13px}
+.login-field{display:flex;flex-direction:column;gap:6px}
+.login-field label{font-size:12px;font-weight:700;color:#334155;display:flex;align-items:center;gap:6px}
+.login-field label i{color:#2E7D32;font-size:12px}
+.login-field input{padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:10px;font-family:'Cairo';font-size:13.5px;background:#F8FAFC;color:#0F172A;transition:all .2s;width:100%}
+.login-field input:focus{outline:none;border-color:#2E7D32;background:#fff;box-shadow:0 0 0 4px rgba(46,125,50,.12)}
+.password-wrap{position:relative}
+.password-wrap input{padding-left:42px!important}
+.toggle-pass{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:#64748B;cursor:pointer;padding:6px 8px;font-size:13px;border-radius:6px;transition:all .2s}
+.toggle-pass:hover{color:#2E7D32;background:rgba(46,125,50,.08)}
+.login-options{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.remember-check{display:flex;align-items:center;gap:6px;cursor:pointer;color:#334155;font-weight:600}
+.remember-check input{width:15px;height:15px;accent-color:#2E7D32;cursor:pointer}
+.login-error{padding:10px 14px;background:#FFEBEE;border:1px solid #FFCDD2;border-right:3px solid #C62828;border-radius:8px;color:#C62828;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;animation:shakeError .4s}
+@keyframes shakeError{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.login-btn{padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#1B5E20,#2E7D32,#43A047);color:#fff;font-family:'Cairo';font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;box-shadow:0 6px 20px rgba(46,125,50,.35);transition:all .2s}
+.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(46,125,50,.45)}
+.login-btn:disabled{opacity:.7;cursor:wait}
+.login-footer{margin-top:20px;padding-top:16px;border-top:1px solid #E2E8F0;text-align:center;color:#64748B;font-size:11px;font-weight:600}
+.login-footer p{display:flex;align-items:center;justify-content:center;gap:5px}
+.login-footer i{color:#2E7D32}
+.login-hint{margin-top:12px;padding:9px 12px;background:#FFF3E0;border:1px solid #FFCC80;border-radius:8px;font-size:10.5px;color:#E65100;font-weight:700;text-align:center;line-height:1.6}
+.login-hint strong{color:#BF360C}
+.user-menu-btn{background:transparent;border:none;color:rgba(255,255,255,.6);cursor:pointer;padding:4px;font-size:11px;border-radius:4px;transition:all .2s}
+.user-menu-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.user-chip{cursor:pointer;transition:all .2s}
+.user-chip:hover{background:rgba(255,255,255,.1)}
+
 @media(max-width:1280px){
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
   .chart-grid{grid-template-columns:1fr}
@@ -417,7 +459,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   <div class="loader-credit">نظام إدارة المستفيدين — v8.0</div>
 </div>
 
-<div id="mainApp">
+<div id="mainApp" style="display:none">
 <div class="app-shell">
 
   <aside class="sidebar" id="sidebar">
@@ -452,12 +494,15 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
       <button class="nav-item" data-page="audit" onclick="switchPage('audit',this)"><i class="fas fa-history"></i><span>سجل التدقيق</span></button>
     </nav>
     <div class="sidebar-foot">
-      <div class="user-chip">
-        <div class="user-avatar"><i class="fas fa-mosque"></i></div>
+      <div class="user-chip" onclick="showUserMenu()" title="خيارات المستخدم">
+        <div class="user-avatar" id="userChipAvatar"><i class="fas fa-user-shield"></i></div>
         <div class="user-meta">
-          <strong>الجمعية الشرعية</strong>
-          <span>فرع البيوم</span>
+          <strong id="userChipName">مستخدم</strong>
+          <span id="userChipRole">—</span>
         </div>
+        <button class="user-menu-btn" onclick="event.stopPropagation();showUserMenu()" title="الخيارات">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
       </div>
     </div>
   </aside>
@@ -1604,6 +1649,53 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
     <div class="modal-foot">
       <button class="btn btn-gray btn-sm" onclick="closeLoanRepayModal()">إلغاء</button>
       <button class="btn btn-teal btn-sm" onclick="submitLoanRepay()"><i class="fas fa-check"></i> تأكيد السداد</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 🔐 LOGIN SCREEN ═══════ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo-wrap">
+      <div class="login-logo-ring"></div>
+      <img src="https://lh3.googleusercontent.com/d/1ob5NjyjX2ji0OpwUuBznmxRblYWxX4Vl" class="login-logo" alt="GS" onerror="this.style.display='none'">
+    </div>
+    <h1 class="login-title">الجمعية الشرعية <span>•</span> فرع البيوم</h1>
+    <p class="login-subtitle">نظام إدارة المستفيدين</p>
+
+    <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+      <div class="login-field">
+        <label><i class="fas fa-user"></i> اسم المستخدم</label>
+        <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم" autocomplete="username" required>
+      </div>
+      <div class="login-field">
+        <label><i class="fas fa-lock"></i> كلمة المرور</label>
+        <div class="password-wrap">
+          <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" autocomplete="current-password" required>
+          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility()" tabindex="-1">
+            <i class="fas fa-eye" id="togglePassIcon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="login-options">
+        <label class="remember-check">
+          <input type="checkbox" id="rememberMe">
+          <span>تذكرني لمدة 30 يوم</span>
+        </label>
+      </div>
+      <div id="loginError" class="login-error" style="display:none"></div>
+      <button type="submit" class="login-btn" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>تسجيل الدخول</span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p><i class="fas fa-shield-alt"></i> نظام آمن ومحمي</p>
+      <div class="login-hint">
+        <strong>افتراضي:</strong> admin / bay2025<br>
+        <span style="font-size:9.5px;opacity:.8">غيّر كلمة المرور فوراً بعد أول دخول</span>
+      </div>
     </div>
   </div>
 </div>
@@ -4339,7 +4431,6 @@ async function printBeneficiaryForm() {
   const fullName = document.getElementById('fullName').value.trim();
   if (!fullName) { showMsg('message', 'لا توجد بيانات للطباعة', 'error'); return; }
 
-  // ── جمع كل البيانات ──
   const fn = document.getElementById('fileNumber').value || '—';
   const nid = document.getElementById('nationalId').value || '';
   const gender = document.getElementById('gender').value || '';
@@ -4388,7 +4479,6 @@ async function printBeneficiaryForm() {
     }
   });
 
-  // ── التواريخ ──
   const now = new Date();
   const gregDate = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   let hijriDate = '';
@@ -4396,12 +4486,10 @@ async function printBeneficiaryForm() {
     hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
   } catch (e) { hijriDate = ''; }
 
-  // ── رقم الاستمارة التسلسلي ──
   const year = now.getFullYear();
   const seq = fn && fn !== '—' ? fn.replace(/\D/g, '').padStart(4, '0') : String(Date.now()).slice(-4);
   const formNumber = `EST-${year}-${seq}`;
 
-  // ── توليد QR ──
   const LOGO_URL = 'https://lh3.googleusercontent.com/d/1ob5NjyjX2ji0OpwUuBznmxRblYWxX4Vl';
   let qrDataUrl = '';
   try {
@@ -4425,7 +4513,6 @@ async function printBeneficiaryForm() {
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cairo',sans-serif;direction:rtl;background:#fff;color:#000;font-size:11px;padding:5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 
-/* Header */
 .hdr{display:flex;align-items:center;gap:12px;border-bottom:3px solid #2E7D32;padding-bottom:8px;margin-bottom:10px}
 .hdr-logo{width:62px;height:62px;object-fit:contain}
 .hdr-center{flex:1;text-align:center}
@@ -4434,20 +4521,17 @@ body{font-family:'Cairo',sans-serif;direction:rtl;background:#fff;color:#000;fon
 .hdr p{font-size:9.5px;color:#777;margin:2px 0 0;letter-spacing:1px}
 .hdr-qr{width:72px;height:72px;border:1px solid #C8E6C9;border-radius:6px;padding:2px;background:#fff}
 
-/* Meta bar */
 .meta-bar{display:flex;justify-content:space-between;align-items:center;background:#E8F5E9;border:1px solid #C8E6C9;border-radius:6px;padding:5px 12px;margin-bottom:9px;font-size:10px;gap:10px}
 .meta-bar .item{display:flex;align-items:center;gap:4px;color:#1B5E20}
 .meta-bar strong{color:#1B5E20;font-weight:800}
 .meta-bar .form-num{background:#2E7D32;color:#fff;padding:3px 14px;border-radius:20px;font-weight:900;letter-spacing:.5px;font-size:10.5px;white-space:nowrap}
 
-/* Sections */
 .section{margin-bottom:7px;border:1px solid #cfd8dc;border-radius:6px;overflow:hidden;page-break-inside:avoid}
 .section-title{background:linear-gradient(90deg,#E8F5E9,#F1F8E9);color:#1B5E20;padding:5px 12px;font-size:11.5px;font-weight:800;border-bottom:1px solid #C8E6C9;display:flex;align-items:center;gap:8px}
 .section-title .num{background:#2E7D32;color:#fff;width:19px;height:19px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900;flex-shrink:0}
 .section-title .count{background:#fff;color:#2E7D32;border:1px solid #A5D6A7;padding:1px 8px;border-radius:10px;font-size:9.5px;font-weight:800;margin-right:auto}
 .section-body{padding:8px 12px}
 
-/* Fields */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px 12px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px 12px}
@@ -4462,7 +4546,6 @@ body{font-family:'Cairo',sans-serif;direction:rtl;background:#fff;color:#000;fon
 .row{margin-bottom:5px}
 .row:last-child{margin-bottom:0}
 
-/* Children table */
 table.children{width:100%;border-collapse:collapse;font-size:9.5px}
 table.children th{background:#2E7D32;color:#fff;padding:5px 3px;font-weight:800;border:1px solid #1B5E20;font-size:9.5px}
 table.children td{padding:4px 3px;border:1px solid #cfd8dc;text-align:center;color:#1a1a1a}
@@ -4470,26 +4553,21 @@ table.children tr:nth-child(even) td{background:#fafbfc}
 table.children td.name{text-align:right;font-weight:700;padding-right:6px}
 table.children td.mono{font-family:'Courier New',monospace;font-size:9px;direction:ltr}
 
-/* Programs chips */
 .chips{display:flex;flex-wrap:wrap;gap:4px}
 .chip{padding:3px 10px;background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;border-radius:12px;font-size:10px;font-weight:700}
 
-/* Checkboxes - 3 أعمدة */
 .chk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 10px}
 .chk{display:flex;align-items:center;gap:6px;font-size:10px;color:#333;padding:2px 0}
 .chk .box{width:12px;height:12px;border:1.5px solid #2E7D32;border-radius:3px;flex-shrink:0;background:#fff}
 
-/* Declaration */
 .declaration{padding:8px 14px;background:#FFF9C4;border:1.5px dashed #F9A825;border-radius:6px;font-size:10.5px;line-height:1.8;color:#5D4037;margin-bottom:10px;font-weight:600;text-align:justify}
 
-/* Signatures */
 .sigs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:6px 0}
 .sig{text-align:center}
 .sig h4{color:#2E7D32;font-size:10px;font-weight:800;margin:0 0 3px}
 .sig .line{height:1px;background:#000;margin-top:30px}
 .sig .line-label{font-size:8.5px;color:#777;margin-top:3px;font-weight:600}
 
-/* Footer */
 .footer{text-align:center;font-size:9px;color:#999;padding-top:6px;border-top:1px solid #eee;margin-top:8px;font-weight:600}
 
 @media print{
@@ -4499,7 +4577,6 @@ table.children td.mono{font-family:'Courier New',monospace;font-size:9px;directi
 }
 </style></head><body>
 
-<!-- ═══ Header ═══ -->
 <div class="hdr">
   <img src="${LOGO_URL}" class="hdr-logo" alt="GS" onerror="this.style.display='none'">
   <div class="hdr-center">
@@ -4510,14 +4587,12 @@ table.children td.mono{font-family:'Courier New',monospace;font-size:9px;directi
   ${qrDataUrl ? `<img src="${qrDataUrl}" class="hdr-qr" alt="QR">` : '<div class="hdr-qr" style="opacity:0"></div>'}
 </div>
 
-<!-- ═══ Meta bar ═══ -->
 <div class="meta-bar">
   <div class="item">📅 <strong>${gregDate}</strong></div>
   ${hijriDate ? `<div class="item">🌙 ${hijriDate}</div>` : ''}
   <div class="form-num">${formNumber}</div>
 </div>
 
-<!-- ═══ ① البيانات الأساسية ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> البيانات الأساسية</div>
   <div class="section-body">
@@ -4553,7 +4628,6 @@ table.children td.mono{font-family:'Courier New',monospace;font-size:9px;directi
   </div>
 </div>
 
-<!-- ═══ ② العنوان ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> العنوان</div>
   <div class="section-body">
@@ -4567,7 +4641,6 @@ table.children td.mono{font-family:'Courier New',monospace;font-size:9px;directi
 </div>
 
 ${children.length ? `
-<!-- ═══ ③ بيانات الأبناء ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> بيانات الأبناء <span class="count">${children.length} أبناء</span></div>
   <div class="section-body" style="padding:0">
@@ -4602,7 +4675,6 @@ ${children.length ? `
   </div>
 </div>` : ''}
 
-<!-- ═══ الوضع الاقتصادي والصحي ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> الوضع الاقتصادي والصحي</div>
   <div class="section-body">
@@ -4620,7 +4692,6 @@ ${children.length ? `
   </div>
 </div>
 
-<!-- ═══ البرامج والخدمات ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> البرامج والخدمات المستفيد منها</div>
   <div class="section-body">
@@ -4630,7 +4701,6 @@ ${children.length ? `
   </div>
 </div>
 
-<!-- ═══ المستندات المرفقة ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> المستندات المرفقة</div>
   <div class="section-body">
@@ -4657,7 +4727,6 @@ ${children.length ? `
 </div>
 
 ${notes ? `
-<!-- ═══ ملاحظات ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">📝</span> ملاحظات</div>
   <div class="section-body">
@@ -4665,7 +4734,6 @@ ${notes ? `
   </div>
 </div>` : ''}
 
-<!-- ═══ الإقرار والتوقيعات ═══ -->
 <div class="section">
   <div class="section-title"><span class="num">${nextSec()}</span> الإقرار والتوقيعات</div>
   <div class="section-body">
@@ -4726,9 +4794,255 @@ function initApp() {
   setTimeout(hideAppLoader, 4000);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   🔐 AUTHENTICATION SYSTEM v1.0
+   ═══════════════════════════════════════════════════════════ */
+const AUTH_KEY = 'bay_auth_v1';
+const SESSION_KEY = 'bay_session_v1';
+const REMEMBER_DAYS = 30;
+
+const DEFAULT_CREDENTIALS = {
+  username: 'admin',
+  password: 'bay2025',
+  fullName: 'مدير النظام',
+  role: 'مدير النظام'
+};
+
+function initAuthStorage() {
+  if (!localStorage.getItem(AUTH_KEY)) {
+    localStorage.setItem(AUTH_KEY, JSON.stringify([DEFAULT_CREDENTIALS]));
+  }
+}
+
+function getCredentials() {
+  try { return JSON.parse(localStorage.getItem(AUTH_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveCredentials(creds) {
+  localStorage.setItem(AUTH_KEY, JSON.stringify(creds));
+}
+
+function createSession(user, remember) {
+  const expiresIn = remember ? REMEMBER_DAYS * 24 * 60 * 60 * 1000 : 8 * 60 * 60 * 1000;
+  const session = {
+    username: user.username,
+    fullName: user.fullName,
+    role: user.role,
+    loginTime: Date.now(),
+    expiresAt: Date.now() + expiresIn
+  };
+  const storage = remember ? localStorage : sessionStorage;
+  const other = remember ? sessionStorage : localStorage;
+  storage.setItem(SESSION_KEY, JSON.stringify(session));
+  other.removeItem(SESSION_KEY);
+  return session;
+}
+
+function getSession() {
+  let raw = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+  if (!raw) return null;
+  try {
+    const s = JSON.parse(raw);
+    if (s.expiresAt && Date.now() > s.expiresAt) {
+      sessionStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return s;
+  } catch { return null; }
+}
+
+function clearSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  const remember = document.getElementById('rememberMe').checked;
+
+  errorEl.style.display = 'none';
+
+  if (!username || !password) {
+    showLoginError('يرجى إدخال اسم المستخدم وكلمة المرور');
+    return;
+  }
+
+  const creds = getCredentials();
+  const user = creds.find(c => c.username === username && c.password === password);
+
+  if (!user) {
+    showLoginError('اسم المستخدم أو كلمة المرور غير صحيحة');
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginPassword').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>جاري تسجيل الدخول...</span>';
+
+  setTimeout(() => {
+    createSession(user, remember);
+    onLoginSuccess(user);
+  }, 500);
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('loginError');
+  el.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${esc(msg)}`;
+  el.style.display = 'flex';
+}
+
+function togglePasswordVisibility() {
+  const input = document.getElementById('loginPassword');
+  const icon = document.getElementById('togglePassIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+function onLoginSuccess(user) {
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('mainApp').style.display = 'block';
+  updateUserChip(user);
+  setTimeout(() => {
+    initApp();
+    showMsg('message', `مرحباً بك، ${user.fullName}`, 'success');
+  }, 200);
+}
+
+function updateUserChip(user) {
+  const nameEl = document.getElementById('userChipName');
+  const roleEl = document.getElementById('userChipRole');
+  const avatarEl = document.getElementById('userChipAvatar');
+  if (nameEl) nameEl.textContent = user.fullName || user.username || 'مستخدم';
+  if (roleEl) roleEl.textContent = user.role || 'مستخدم';
+  if (avatarEl) avatarEl.innerHTML = '<i class="fas fa-user-shield"></i>';
+}
+
+function logout() {
+  Swal.fire({
+    title: 'تسجيل الخروج',
+    text: 'هل تريد تسجيل الخروج من النظام؟',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'نعم، خروج',
+    cancelButtonText: 'إلغاء',
+    confirmButtonColor: '#C62828',
+    cancelButtonColor: '#64748B'
+  }).then(r => {
+    if (r.isConfirmed) {
+      clearSession();
+      location.reload();
+    }
+  });
+}
+
+function showUserMenu() {
+  const s = getSession();
+  if (!s) return;
+  Swal.fire({
+    title: s.fullName || s.username,
+    html: `<p style="font-size:12px;color:#64748B;margin-bottom:6px"><i class="fas fa-user-tag"></i> ${esc(s.role || '')}</p>
+           <p style="font-size:10.5px;color:#94A3B8">تاريخ الدخول: ${new Date(s.loginTime).toLocaleString('ar-EG')}</p>`,
+    showCancelButton: true,
+    showDenyButton: true,
+    confirmButtonText: '<i class="fas fa-key"></i> تغيير كلمة المرور',
+    denyButtonText: '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج',
+    cancelButtonText: 'إلغاء',
+    confirmButtonColor: '#2E7D32',
+    denyButtonColor: '#C62828',
+    cancelButtonColor: '#64748B'
+  }).then(r => {
+    if (r.isConfirmed) showChangePasswordModal();
+    else if (r.isDenied) logout();
+  });
+}
+
+function showChangePasswordModal() {
+  const s = getSession();
+  if (!s) return;
+  Swal.fire({
+    title: 'تغيير كلمة المرور',
+    html: `
+      <div style="text-align:right;font-family:Cairo;direction:rtl">
+        <div style="margin-bottom:10px">
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#334155">كلمة المرور الحالية</label>
+          <input type="password" id="swal_oldPass" class="swal2-input" style="width:100%;font-family:Cairo;font-size:13px;margin:0">
+        </div>
+        <div style="margin-bottom:10px">
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#334155">كلمة المرور الجديدة</label>
+          <input type="password" id="swal_newPass" class="swal2-input" style="width:100%;font-family:Cairo;font-size:13px;margin:0">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#334155">تأكيد كلمة المرور</label>
+          <input type="password" id="swal_confirmPass" class="swal2-input" style="width:100%;font-family:Cairo;font-size:13px;margin:0">
+        </div>
+      </div>
+    `,
+    confirmButtonText: 'حفظ التغييرات',
+    cancelButtonText: 'إلغاء',
+    showCancelButton: true,
+    confirmButtonColor: '#2E7D32',
+    cancelButtonColor: '#64748B',
+    preConfirm: () => {
+      const oldPass = document.getElementById('swal_oldPass').value;
+      const newPass = document.getElementById('swal_newPass').value;
+      const confPass = document.getElementById('swal_confirmPass').value;
+      if (!oldPass || !newPass || !confPass) { Swal.showValidationMessage('يرجى ملء جميع الحقول'); return false; }
+      if (newPass.length < 6) { Swal.showValidationMessage('كلمة المرور يجب أن تكون 6 أحرف على الأقل'); return false; }
+      if (newPass !== confPass) { Swal.showValidationMessage('كلمتا المرور غير متطابقتين'); return false; }
+      const all = getCredentials();
+      const me = all.find(c => c.username === s.username);
+      if (!me || me.password !== oldPass) { Swal.showValidationMessage('كلمة المرور الحالية غير صحيحة'); return false; }
+      return { newPass };
+    }
+  }).then(r => {
+    if (r.isConfirmed) {
+      const all = getCredentials();
+      const idx = all.findIndex(c => c.username === s.username);
+      if (idx >= 0) {
+        all[idx].password = r.value.newPass;
+        saveCredentials(all);
+        showMsg('message', '✅ تم تغيير كلمة المرور بنجاح', 'success');
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   🚀 BOOTSTRAP
+   ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  initApp();
-  console.log('✅ النظام جاهز — v8.0 + استمارة v2.0');
+  initAuthStorage();
+  const session = getSession();
+
+  if (session) {
+    // ✅ Already logged in
+    document.getElementById('mainApp').style.display = 'block';
+    updateUserChip(session);
+    initApp();
+  } else {
+    // 🔐 Show login screen after loader
+    setTimeout(() => {
+      hideAppLoader();
+      setTimeout(() => {
+        document.getElementById('loginScreen').classList.add('show');
+        setTimeout(() => document.getElementById('loginUsername').focus(), 300);
+      }, 150);
+    }, 1200);
+  }
+
+  console.log('✅ النظام جاهز — v8.0 + Auth v1.0');
 });
 
 document.getElementById('searchInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchBeneficiary(); });
