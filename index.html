@@ -38,7 +38,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 
 #mainApp{min-height:100vh}
 .app-shell{display:flex;min-height:100vh}
-.sidebar{width:var(--sidebar-w);background:linear-gradient(180deg,#0F172A 0%,#1E293B 100%);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;z-index:100;transition:width var(--transition);box-shadow:-8px 0 32px rgba(15,23,42,.12);overflow:hidden}
+.sidebar{width:var(--sidebar-w);background:linear-gradient(180deg,#0F172A 0%,#1E293B 100%);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;z-index:100;transition:width var(--transition),transform .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 32px rgba(15,23,42,.12);overflow:hidden}
 .sidebar.collapsed{width:var(--sidebar-collapsed)}
 .sidebar-head{padding:18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
 .sidebar-logo{width:42px;height:42px;border-radius:var(--r-md);background:linear-gradient(135deg,var(--brand-600),var(--brand-400));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:17px;flex-shrink:0;overflow:hidden}
@@ -415,6 +415,49 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 .user-chip{cursor:pointer;transition:all .2s}
 .user-chip:hover{background:rgba(255,255,255,.1)}
 
+/* ═══════ 🆕 Mobile Drawer Elements ═══════ */
+.overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(15,23,42,.75);
+  backdrop-filter:blur(3px);
+  z-index:99;
+}
+.overlay.show{ display:block; }
+
+.mob-toggle{
+  display:none;
+  position:fixed;
+  bottom:22px;
+  left:22px;
+  width:54px;height:54px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--brand-600),var(--brand-400));
+  border:none;color:#fff;font-size:22px;
+  cursor:pointer;z-index:98;
+  box-shadow:0 12px 28px -8px rgba(46,125,50,.55);
+  place-items:center;
+  font-family:'Cairo',sans-serif;
+  transition:var(--transition);
+}
+.mob-toggle:hover{ transform:scale(1.06); }
+
+.sidebar-close{
+  display:none;
+  position:absolute;
+  top:14px;left:14px;
+  width:36px;height:36px;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;cursor:pointer;z-index:15;
+  align-items:center;justify-content:center;
+  font-size:14px;
+  transition:var(--transition);
+}
+.sidebar-close:hover{ background:rgba(255,255,255,.22); }
+@media(max-width:900px){ .sidebar-close{ display:flex; } }
+ 
 @media(max-width:1280px){
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
   .chart-grid{grid-template-columns:1fr}
@@ -424,20 +467,57 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   .period-cards{grid-template-columns:1fr}
 }
 @media(max-width:900px){
-  .sidebar{width:var(--sidebar-collapsed)}
-  .sidebar .sidebar-brand,.sidebar .user-meta,.sidebar .nav-item span{display:none}
-  .sidebar .nav-item{justify-content:center;padding:10px}
-  .main-area{margin-right:var(--sidebar-collapsed)}
-  .content{padding:16px 14px 60px}
-  .form-grid,.form-grid.g2,.form-grid.g4{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:1fr}
-  .balance-hero-stats{grid-template-columns:1fr}
-  .fund-grid{grid-template-columns:1fr}
-  .grand-total-stats{grid-template-columns:1fr}
-  .period-cards{grid-template-columns:1fr}
+  /* 🆕 منع تمرير الصفحة وقت فتح القائمة */
+  body.sidebar-open{ overflow:hidden; }
+
+  /* 🆕 Sidebar يبقى Drawer مخفي كليًا */
+  .sidebar{
+    width:100vw !important;
+    max-width:100vw !important;
+    transform:translateX(100%);
+    box-shadow:none !important;
+    padding:16px 14px 20px;
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    box-shadow:-20px 0 60px rgba(0,0,0,.6) !important;
+  }
+  /* 🆕 إرجاع العناصر اللي كانت مخفية */
+  .sidebar .sidebar-brand,
+  .sidebar .user-meta,
+  .sidebar .nav-item span,
+  .sidebar .nav-section-label,
+  .sidebar .nav-item .badge-count{ display:revert; }
+  .sidebar .nav-item{
+    justify-content:flex-start !important;
+    padding:11px 13px !important;
+    font-size:13.5px !important;
+    text-align:right;
+  }
+  /* 🆕 إخفاء زرار الـ collapse القديم على الموبايل */
+  .sidebar-toggle{ display:none !important; }
+
+  /* 🆕 Main-area مفيش margin */
+  .main-area{ margin-right:0 !important; }
+
+  /* 🆕 تحسينات عامة */
+  .content{ padding:16px 14px 90px; }
+  .topbar{ padding:10px 14px; gap:10px; }
+  .topbar-title h2{ font-size:16px; }
+  .topbar-title p{ font-size:10.5px; }
+  .form-grid,.form-grid.g2,.form-grid.g4{ grid-template-columns:1fr; }
+  .kpi-grid{ grid-template-columns:1fr; }
+  .balance-hero-stats{ grid-template-columns:1fr; }
+  .fund-grid{ grid-template-columns:1fr; }
+  .grand-total-stats{ grid-template-columns:1fr; }
+  .period-cards{ grid-template-columns:1fr; }
+
+  /* 🆕 إظهار زر الفتح */
+  .mob-toggle{ display:grid; }
 }
 @media print{
-  .sidebar,.topbar,.btn,.export-bar,.assist-tabs,.period-cards,.period-options{display:none!important}
+  .sidebar,.topbar,.btn,.export-bar,.assist-tabs,.period-cards,.period-options,
+  .mob-toggle,.overlay,.sidebar-close{display:none!important}
   .main-area{margin:0!important}
   .content{padding:0!important}
 }
@@ -464,6 +544,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
 
   <aside class="sidebar" id="sidebar">
     <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-chevron-right" id="sidebarToggleIcon"></i></button>
+    <button class="sidebar-close" onclick="closeMobileSidebar()" title="إغلاق"><i class="fas fa-times"></i></button>
     <div class="sidebar-head">
       <div class="sidebar-logo"><img src="https://lh3.googleusercontent.com/d/1ob5NjyjX2ji0OpwUuBznmxRblYWxX4Vl" alt="GS" onerror="this.style.display='none';this.parentElement.textContent='GS'"></div>
       <div class="sidebar-brand"><h3>الجمعية الشرعية</h3><span>فرع البيوم</span></div>
@@ -506,6 +587,8 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
       </div>
     </div>
   </aside>
+
+  <div class="overlay" id="overlay"></div>
 
   <main class="main-area">
     <header class="topbar">
@@ -1601,6 +1684,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
     </div>
   </main>
 </div>
+  <button class="mob-toggle" id="mobToggle" title="القائمة"><i class="fas fa-bars"></i></button>
 </div>
 
 <!-- MODALS -->
@@ -1843,12 +1927,28 @@ function switchPage(pageId, btn) {
   else if (pageId === 'assistance') { loadFundBalances(); }
   else if (pageId === 'periodic') { initPeriodYearSelect(); }
   else if (pageId === 'individual') { loadProjectsForIndividual(); }
+  if (window.innerWidth <= 900) closeMobileSidebar();
 }
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
   const c = document.getElementById('sidebar').classList.contains('collapsed');
   document.getElementById('sidebarToggleIcon').className = c ? 'fas fa-chevron-left' : 'fas fa-chevron-right';
+}
+
+/* 🆕 Mobile Drawer */
+function toggleMobileSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  const isOpening = !sb.classList.contains('open');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+  document.body.classList.toggle('sidebar-open', isOpening);
+}
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.body.classList.remove('sidebar-open');
 }
 
 /* ═══════ 🆕 PERIODIC REPORT ═══════ */
@@ -5043,6 +5143,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   console.log('✅ النظام جاهز — v8.0 + Auth v1.0');
+});
+
+  /* 🆕 Mobile Drawer Events */
+document.getElementById('mobToggle')?.addEventListener('click', toggleMobileSidebar);
+document.getElementById('overlay')?.addEventListener('click', closeMobileSidebar);
+
+// 🆕 إغلاق تلقائي عند تصغير الشاشة (rotate) من desktop لـ mobile
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 900) closeMobileSidebar();
 });
 
 document.getElementById('searchInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchBeneficiary(); });
