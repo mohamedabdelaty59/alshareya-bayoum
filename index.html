@@ -429,7 +429,7 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   display:none;
   position:fixed;
   bottom:22px;
-  left:22px;
+  right:22px;
   width:54px;height:54px;
   border-radius:16px;
   background:linear-gradient(135deg,var(--brand-600),var(--brand-400));
@@ -439,9 +439,16 @@ body{font-family:'Cairo',sans-serif;background:var(--ink-50);color:var(--ink-900
   place-items:center;
   font-family:'Cairo',sans-serif;
   transition:var(--transition);
+  /* 🆕 تحسينات إضافية */
+  animation:floatPulse 2.5s ease-in-out infinite;
 }
-.mob-toggle:hover{ transform:scale(1.06); }
+.mob-toggle:hover{ transform:scale(1.08); }
 
+@keyframes floatPulse {
+  0%, 100% { box-shadow: 0 12px 28px -8px rgba(46,125,50,.55); }
+  50%      { box-shadow: 0 12px 28px -8px rgba(46,125,50,.75), 0 0 0 8px rgba(46,125,50,.08); }
+}
+  
 .sidebar-close{
   display:none;
   position:absolute;
